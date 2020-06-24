@@ -1,0 +1,13 @@
+{
+  "name": "Flipboard",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd api && tsc && cd ..",
+    "start-api": "node api/build/index.js"
+  },
+  "repository": "https://github.com/ClementLB-lab/Flipboard.git",
+  "author": "<alexandre.cochet@epitech.eu>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": ["api", "webapp"]
+}
