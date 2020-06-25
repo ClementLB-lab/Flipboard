@@ -1,3 +1,4 @@
+import url from "url";
 import express from "express";
 import { NewsApi } from "./NewsApi";
 
@@ -21,7 +22,8 @@ export class Server
 	private init()
 	{
 		this.app.get("/headlines", async (req, res) => {
-			let output = await this.newsApi.getHeadlines("fr");
+			const query = url.parse(req.url, true).query;
+			const output = await this.newsApi.getHeadlines(query);
 
 			return (res.status(200).json(output));
 		});

@@ -1,4 +1,15 @@
 import fetch from "node-fetch";
+import { NewsType } from "./NewsType";
+
+interface SearchType
+{
+	tag?:string;
+	country?:string;
+	sources?:string;
+	category?:string;
+	from?:string;
+	to?:string;
+}
 
 export class NewsApi
 {
@@ -10,10 +21,30 @@ export class NewsApi
 		this.KEY = process.env.NEWS_API_KEY!;
 	}
 	
-	public async getHeadlines(country:string)
+	private static createUrl(data:SearchType, type:string, key:string):string
 	{
-		const URL = `${NewsApi.BASE_URL}top-headlines?country=${country}&apiKey=${this.KEY}`;
+		let url = `${NewsApi.BASE_URL}${type}?apiKey=${key}`;
 
-		return (await fetch(URL).then((res => res.json())));
+		url += data.country ? `&country=${data.country}` : "";
+		url += data.category ? `&category=${data.category}` : "";
+		url += data.tag ? `&q=${data.tag}` : "";
+		url += data.sources ? `&sources=${data.sources}` : "";
+		url += data.from ? `&from=${data.from}` : "";
+		url += data.to ? `&to=${data.to}` : "";
+		return (url);
+	}
+
+	public async getHeadlines(data:SearchType):Promise<NewsType>
+	{
+		const URL = NewsApi.createUrl(data, "top-headlines", this.KEY);
+
+		return (await fetch(URL).then((res) => res.json()));
+	}
+
+	public async getLatest(data:SearchType):Promise<NewsType>
+	{
+		const URL = NewsApi.createUrl(data, "everything", this.KEY);
+
+		return (await fetch(URL).then((res) => res.json()));
 	}
 }
