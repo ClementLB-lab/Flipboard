@@ -1,5 +1,6 @@
 import url from "url";
 import express from "express";
+import cors from "cors";
 import { NewsApi } from "./NewsApi";
 
 export class Server
@@ -21,6 +22,7 @@ export class Server
 
 	private init()
 	{
+		this.app.use(cors());
 		this.app.get("/headlines", async (req, res) => {
 			const query = url.parse(req.url, true).query;
 			const output = await this.newsApi.getHeadlines(query);
