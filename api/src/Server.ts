@@ -29,5 +29,11 @@ export class Server
 
 			return (res.status(200).json(output));
 		});
+		this.app.get("/everything", async (req, res) => {
+			const query = url.parse(req.url, true).query;
+			const output = await this.newsApi.getEverything(query);
+
+			return (res.status(200).json(output));
+		});
 	}
 }

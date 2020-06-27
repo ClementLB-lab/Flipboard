@@ -1,15 +1,5 @@
 import fetch from "node-fetch";
-import { NewsType } from "./NewsType";
-
-interface SearchType
-{
-	tag?:string;
-	country?:string;
-	sources?:string;
-	category?:string;
-	from?:string;
-	to?:string;
-}
+import { NewsType, SearchType } from "./NewsType";
 
 export class NewsApi
 {
@@ -41,7 +31,7 @@ export class NewsApi
 		return (await fetch(URL).then((res) => res.json()));
 	}
 
-	public async getLatest(data:SearchType):Promise<NewsType>
+	public async getEverything(data:SearchType):Promise<NewsType>
 	{
 		const URL = NewsApi.createUrl(data, "everything", this.KEY);
 

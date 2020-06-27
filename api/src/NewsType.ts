@@ -16,3 +16,13 @@ export interface NewsType
 	totalResults:number;
 	articles:Array<Article>;
 }
+
+export interface SearchType
+{
+	tag?:string;
+	country?:string;
+	sources?:string;
+	category?:string;
+	from?:string;
+	to?:string;
+}
