@@ -17,6 +17,7 @@ export class NewsApi
 
 	public async getHeadlines(data:SearchType):Promise<NewsType>
 	{
+<<<<<<< HEAD
 		const URL = NewsApi.createUrl(data);
 		const req = {
 			method: "GET",
@@ -27,5 +28,17 @@ export class NewsApi
 		};
 
 		return (await fetch(URL, req).then((res) => res.json()));
+=======
+		const URL = NewsApi.createUrl(data, "top-headlines", this.KEY);
+
+		return (await fetch(URL).then((res) => res.json()));
+	}
+
+	public async getEverything(data:SearchType):Promise<NewsType>
+	{
+		const URL = NewsApi.createUrl(data, "everything", this.KEY);
+
+		return (await fetch(URL).then((res) => res.json()));
+>>>>>>> webapp
 	}
 }
