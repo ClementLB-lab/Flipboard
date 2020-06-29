@@ -1,18 +1,26 @@
 interface Article
 {
-	source:{id:string, name:string};
-	author:string;
+	id:string;
 	title:string;
-	description:string;
 	url:string;
-	urlToImage:string;
-	publishedAt:string;
-	content:string;
+	description:string;
+	body:string;
+	keywords:string;
+	language:string;
+	datePublished:string;
+	provider: { name:string };
+	image: {url:string, width:number, height:number }
 }
 
 export interface NewsType
 {
-	status:string;
-	totalResults:number;
-	articles:Array<Article>;
+	relatedSearch:string[];
+	value:Array<Article>;
+}
+
+export interface SearchType
+{
+	tag:string;
+	from?:string;
+	to?:string;
 }

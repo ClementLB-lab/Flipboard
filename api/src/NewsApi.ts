@@ -1,50 +1,31 @@
 import fetch from "node-fetch";
-import { NewsType } from "./NewsType";
-
-interface SearchType
-{
-	tag?:string;
-	country?:string;
-	sources?:string;
-	category?:string;
-	from?:string;
-	to?:string;
-}
+import { NewsType, SearchType } from "./NewsType";
 
 export class NewsApi
 {
-	private static readonly BASE_URL = "http://newsapi.org/v2/"
-	private readonly KEY:string;
-
-	constructor()
-	{
-		this.KEY = process.env.NEWS_API_KEY!;
-	}
+	private static readonly BASE_URL = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/NewsSearchAPI";
 	
-	private static createUrl(data:SearchType, type:string, key:string):string
+	private static createUrl(data:SearchType):string
 	{
-		let url = `${NewsApi.BASE_URL}${type}?apiKey=${key}`;
+		let url = `${NewsApi.BASE_URL}?autoCorrect=false&pageNumber=1&pageSize=10&safeSearch=false`;
 
-		url += data.country ? `&country=${data.country}` : "";
-		url += data.category ? `&category=${data.category}` : "";
 		url += data.tag ? `&q=${data.tag}` : "";
-		url += data.sources ? `&sources=${data.sources}` : "";
-		url += data.from ? `&from=${data.from}` : "";
-		url += data.to ? `&to=${data.to}` : "";
+		url += data.from ? `&fromPublishedDate=${data.from}` : "";
+		url += data.to ? `&toPublishedDate=${data.to}` : "";
 		return (url);
 	}
 
 	public async getHeadlines(data:SearchType):Promise<NewsType>
 	{
-		const URL = NewsApi.createUrl(data, "top-headlines", this.KEY);
+		const URL = NewsApi.createUrl(data);
+		const req = {
+			method: "GET",
+			headers: {
+				"x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
+				"x-rapidapi-key": process.env.NEWS_API_KEY!
+			}
+		};
 
-		return (await fetch(URL).then((res) => res.json()));
-	}
-
-	public async getLatest(data:SearchType):Promise<NewsType>
-	{
-		const URL = NewsApi.createUrl(data, "everything", this.KEY);
-
-		return (await fetch(URL).then((res) => res.json()));
+		return (await fetch(URL, req).then((res) => res.json()));
 	}
 }
