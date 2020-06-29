@@ -22,21 +22,9 @@ export class Server
 
 	private init()
 	{
-<<<<<<< HEAD
 		this.app.get("/news", async (req, res) => {
 			const query = <any>url.parse(req.url, true).query;
-=======
-		this.app.use(cors());
-		this.app.get("/headlines", async (req, res) => {
-			const query = url.parse(req.url, true).query;
->>>>>>> webapp
 			const output = await this.newsApi.getHeadlines(query);
-
-			return (res.status(200).json(output));
-		});
-		this.app.get("/everything", async (req, res) => {
-			const query = url.parse(req.url, true).query;
-			const output = await this.newsApi.getEverything(query);
 
 			return (res.status(200).json(output));
 		});
