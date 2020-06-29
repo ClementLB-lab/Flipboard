@@ -1,0 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.animation {
+    animation: all 1s linear;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+button, .button {
+    cursor: pointer;
+}
+
+section {
+    min-height: 100vh;
+}
+
+body {
+    margin-top: 50px;
+}
