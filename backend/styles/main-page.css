@@ -1,0 +1,39 @@
+body {
+    height: 100vh;
+}
+
+.container {
+    min-height: 80%;
+    margin-bottom: -50px;
+}
+
+.header {
+    max-width: 75vh;
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+.brand-banner {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.brand-banner_header {
+    margin-bottom: 15px;
+    line-height: 40px;
+    font-family: FaktCondensed,AvenirNextCondensed-Medium,Segoe UI,sans-serif;
+}
+
+hr { 
+    display: block;
+    border: none;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+    background-color:red;
+    width: 33vh;
+    height: 3px;
+} 

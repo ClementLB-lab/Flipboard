@@ -5,6 +5,6 @@ export default class BackRouter {
 
     public Route(app: express.Application) {
 
-        app.route("/").get(utils.defaultRender("index"))
+        app.route("/").get(utils.defaultRender("index.ejs"))
     }
 }

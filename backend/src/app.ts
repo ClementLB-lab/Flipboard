@@ -13,6 +13,7 @@ export default class App {
 
         // EJS engine
         this.app.engine('html', require('ejs').renderFile);
+        this.app.set('views', '/home/francois.lagadec/Flipboard/backend/views');
         this.app.set('view engine', 'html');
 
         // Path
