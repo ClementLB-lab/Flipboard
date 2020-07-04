@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Connexion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/epiFlipboard.css" />
+</head>
+
+<body>
+    <div id="root">
+        <div id="content" class="app">
+            <div class="splash" style="background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(images/wallpaper.jpg);">
+                <div class="auth-module signup">
+                    <div class="auth-module__content">
+                        <h1 class="ui-text--title signup__title">Se Connecter</h1>
+                        <div class="message message--error" id="errmsg"></div>
+                        <form method="post" action="">
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Votre email" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Votre mot de passe" value="">
+                                </div>
+                            </div>
+                            <button id="login-submit" type="button" class="button--primary button--block button--base" type="submit">Connexion</button>
+                        </form>
+                        <div class="login__alt-actions">
+                            <a name="login__forgot-password" class="ui-text--supporting outbound-link" href="forgotpwd" target="_blank" rel="noopener noreferrer nofollow" role="link">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
+                        <p class="ui-text--supporting signup__alt-actions">Nouveau sur epiFlipboard ?&nbsp;<a name="signup__login-link" class="internal-link" data-vars-anchor-link="/login" role="link" href="/register">Créer un compte</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/scripts/login.js"></script>
+</body>
+</html>

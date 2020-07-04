@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Mot de passe oublié ?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/epiFlipboard.css" />
+</head>
+
+<body>
+    <div id="root">
+        <div id="content" class="app">
+            <div class="splash" style="background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(images/wallpaper.jpg);">
+                <div class="auth-module signup">
+                    <div class="auth-module__content">
+                        <h1 class="ui-text--title signup__title">Réinitialiser votre mot de passe</h1>
+                        <div>Saisissez votre e-mail et nous vous enverrons
+                          vos instructions de réinitialisation.<br></div>
+                        <div class="message message--error" id="errmsg"></div>
+                        <form method="post" action="">
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Votre email" value="">
+                                </div>
+                            </div>
+                            <button id="forgotpwd-submit" type="button" class="button--primary button--block button--base" type="submit">Envoyer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/scripts/forgotpwd.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+version : '3'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - db-tier
+
+  api:
+    build: ./api/
+    restart: always
+    ports:
+        - "3001:3001"
+    networks:
+        - api-tier
+        - db-tier
+    environment:
+        - DB_URL=db
+        - POSTGRES_USER=user
+        - POSTGRES_PASSWORD=password
+    volumes:
+        - db-image:/var/lib/images-database/data
+
+networks:
+  db-tier:
+  api-tier:
+
+volumes:
+  db-data:
+  db-image:

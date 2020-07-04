@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Modification du mot de passe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/index.css" />
+</head>
+
+<body>
+    <div id="content">
+        <div class="">
+            <div class="page"><main class="home layout--main-unauthenticated main">
+                <div class="centered-column">
+                    <header class="brand-banner">
+                        <p class="brand-banner__subheader">Modification du mot de passe</p>
+                        <h1 class="ui-text--title signup__title">Choisissez votre nouveau mot de passe</h1>
+                        <div class="message message--error" id="errmsg"></div>
+                        <form method="post" action="">
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="currentpassword" name="password" class="form-control" placeholder="Votre mot de passe actuel" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Votre nouveau mot de passe" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation mot de passe" value="">
+                                </div>
+                            </div>
+                            <button id="resetcurrentpwd-submit" type="button" class="button--primary button--block button--base" type="submit">Valider</button>
+                        </form>
+                    </header>
+                </div></main>
+            </div>
+        </div>
+    </div>
+    <script src="/scripts/resetcurrentpwd.js"></script>
+</body>
+</html>

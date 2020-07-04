@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Inscription</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/epiFlipboard.css" />
+</head>
+
+<body>
+    <div id="root">
+        <div id="content" class="app">
+            <div class="splash" style="background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(images/wallpaper.jpg);">
+                <div class="auth-module signup">
+                    <div class="auth-module__content">
+                        <h1 class="ui-text--title signup__title">Rejoignez EpiFlipboard</h1>
+                        <div class="message message--error" id="errmsg"></div>
+                        <form method="post" action="">
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Votre nom" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Votre email" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Votre mot de passe" value="">
+                                </div>
+                            </div>
+                            <div class="field-block">
+                                <div class="input-field">
+                                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation mot de passe" value="">
+                                </div>
+                            </div>
+                            <button id="register-submit" type="button" class="button--primary button--block button--base" type="submit">Créer un compte</button>
+                        </form>
+                        <p class="ui-text--supporting signup__alt-actions">Vous avez déjà un compte ?&nbsp;<a name="signup__login-link" class="internal-link" data-vars-anchor-link="/login" role="link" href="/login">Se connecter</a></p>
+                    </div>
+                    <div class="auth-module__terms-of-use-and-privacy-policy">
+                        <p class="ui-text--supporting">En continuant, vous acceptez les Conditions d'utilisation et la Politique de confidentialité</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/scripts/register.js"></script>
+</body>
+</html>

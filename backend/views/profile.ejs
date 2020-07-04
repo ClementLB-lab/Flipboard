@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Profil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/index.css" />
+    <link rel="stylesheet" href="/styles/popup.css" />
+</head>
+
+<body class="">
+    <div id="content">
+        <div class="">
+            <div class="page">
+                <% if (profile) { %>
+                <input type="hidden" id="profile-id" name="profile-id" value="<%= profile.id %>">
+                <main class="section-view profile-view main">
+                    <div class="centered-column">
+                        <header class="profile-header flex--column-to-row">
+                            <div class="profile-header__author-avatar author-avatar">
+                                <img class="author-avatar__image image image--loaded" src="https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt="Avatar - Paris Match" width="80" height="80">
+                            </div>
+                            <div class="section-header__text">
+                                <div class="profile-header__title-wrapper">
+                                    <h1 id="profile-name" class="profile-header__title ui-text--page-title">
+                                        <%= profile.name %>
+                                </h1>
+                            </div>
+                            <p id="section-header-bio" class="section-header__description ui-text--body-2"><%= profile.bio %></p>
+                            <nav class="sub-nav">
+                                <ul>
+                                    <li class="sub-nav__item">
+                                        <a class="sub-nav__item-link internal-link" role="link" href="/followers"><%= profile.followers %>&nbsp;
+                                            <span>Followers</span>
+                                        </a>
+                                    </li>
+                                    <li class="sub-nav__item">
+                                        <a class="sub-nav__item-link internal-link" role="link" href="/magazines"><%= profile.magazines %>&nbsp;
+                                            <span>Magazines</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <% if (isOwnProfile) { %>
+                            <div class="profile-header__buttons">
+                                <button id="edit-profile-submit" class="section-header__button button--base button--secondary button--inline" type="button">Editer</button>
+                            </div>
+                            <% } else if (loggedin) { %>
+                                <div class="profile-header__buttons">
+                                    <button id="follow-submit" class="section-header__button button--base button--secondary button--inline" type="button"><%= followState %></button>
+                                    <button class="section-header__button button--base button--secondary button--inline" type="button">Laisser un avis</button>
+                                </div>
+                            <% }  %>
+                        </header>
+                        <div class="hover_bkgr_fricc">
+                            <span class="helper"></span>
+                            <div>
+                                <div class="popupCloseButton">&times;</div>
+                                <h1 class="layout-section__header ui-text--title">Edition du profil</h1>
+                                <div class="message message--error" id="errmsg"></div>
+                                <p>Nom<br /></p>
+                                <div class="input-field">
+                                    <input type="text" id="bio-name" name="name" class="form-control" placeholder="Votre nom" value="<%= profile.name %>">
+                                </div>
+                                <div class="css-1dbjc4n r-1j3t67a r-1w50u8q">
+                                    <label class="css-1dbjc4n r-1u4rsef r-rull8r r-wgabs5 r-1awa8pu r-1jkafct r-18u37iz">
+                                        <div class="css-1dbjc4n r-16y2uox r-1wbh5a2">
+                                            <div dir="auto" class="css-901oao css-bfa6kz r-k200y r-1re7ezh r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-utggzx r-glunga r-qvutc0">
+                                                <span class="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0">Bio</span>
+                                            </div>
+                                            <div class="css-1dbjc4n r-18u37iz r-16y2uox r-1wbh5a2 r-1udh08x">
+                                                <div dir="auto" class="bio">
+                                                    <textarea id="bio-field" autocapitalize="sentences" autocomplete="on" autocorrect="on" maxlength="160" name="description" placeholder="Ajoutez votre biographie" spellcheck="true" dir="auto" style="height: 85px;"><%= profile.bio %></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <div class="css-1dbjc4n r-18u37iz r-utggzx">
+                                        <div class="css-1dbjc4n r-13awgt0 r-eqz5dr">
+
+                                        </div>
+                                        <div aria-live="polite" class="css-1dbjc4n">
+                                            <div dir="auto" class="css-901oao r-173mn98 r-1re7ezh r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-glunga r-qvutc0">
+                                                <span id="bio-length" class="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0">0/160
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-header__buttons">
+                                    <button id="save-profile-submit" class="section-header__button button--base button--secondary button--inline" type="button">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>            
+                    </div>
+                </main>
+                <% } else { %>
+                <h1> Profile not found </h1>
+                <% }  %>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/scripts/profile.js"></script>
+</body>
+</html>
