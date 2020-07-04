@@ -2,12 +2,10 @@ import express from 'express';
 import * as routerUtil from './utils/routerUtil'
 
 import UserController from './controllers/userController'
-import ReviewsController from './controllers/reviewsController'
 
 
 export default class Route {
     private userController = new UserController()
-    private reviewsController = new ReviewsController()
 
     public Route(app: express.Application) {
 
@@ -23,8 +21,5 @@ export default class Route {
         app.route("/user/profilefollow").post(async (req, res, next) => await this.userController.profileFollow(req, res).catch(next))
         app.route("/user/getFollowingById").get(async (req, res, next) => await this.userController.getFollowingById(req, res).catch(next))
         app.route("/user/editprofile").post(async (req, res, next) => await this.userController.editProfile(req, res).catch(next))
-
-        app.route("/reviews/get").get(async (req, res, next) => await this.reviewsController.get(req, res).catch(next))
-        app.route("/reviews/add").post(async (req, res, next) => await this.reviewsController.add(req, res).catch(next))
     }
 }
