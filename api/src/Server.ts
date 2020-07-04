@@ -1,5 +1,6 @@
 import url from "url";
 import express from "express";
+import cors from "cors";
 import { NewsApi } from "./NewsApi";
 
 export class Server
@@ -9,6 +10,7 @@ export class Server
 	
 	constructor(private readonly PORT:number)
 	{
+		this.app.use(cors());
 		this.app.listen(this.PORT, (err:string) => {
 			if (err) {
 				console.error(err);
@@ -21,11 +23,11 @@ export class Server
 
 	private init()
 	{
-		this.app.get("/news", async (_req, _res) => {
-			const query = <any>url.parse(_req.url, true).query;
+		this.app.get("/news", async (req, res) => {
+			const query = <any>url.parse(req.url, true).query;
 			const output = await this.newsApi.getHeadlines(query);
 
-			return (_res.status(200).json(output));
+			return (res.status(200).json(output));
 		});
 	}
 }
