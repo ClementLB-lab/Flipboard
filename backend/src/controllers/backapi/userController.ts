@@ -142,4 +142,16 @@ export default class UserController {
         return res.status(200).json(result)
     }
 
+    /**
+     * POST
+     * see API's doc
+     */
+    public async uploadAvatar(req: express.Request, res: express.Response) {
+        const { url } = req.body;
+        const token = jwtUtils.getAuthToken(req)
+
+        const result = await api.post("/user/upload/avatar", { url, token })
+
+        return res.status(200).json(result)
+    }
 }

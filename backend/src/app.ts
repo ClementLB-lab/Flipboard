@@ -1,7 +1,8 @@
 import express from 'express';
 import BackRouter from './backRouter';
 import BackApiRouter from './backapiRouter';
-import cookieSession from 'cookie-session'
+import cookieSession from 'cookie-session';
+import * as bodyParser from 'body-parser';
 
 const rootDir = __dirname + "/../"
 
@@ -12,7 +13,10 @@ export default class App {
 
     constructor() {
 
-        this.app.use(express.urlencoded({ extended: false }))
+//        this.app.use(express.urlencoded({ extended: false }))
+        this.app.use(bodyParser.json({limit: '50mb'}));
+        this.app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 
         // Session cookie
         this.app.use(cookieSession({

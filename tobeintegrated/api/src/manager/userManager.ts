@@ -1,6 +1,6 @@
 import User from "../models/User";
 import Follower from "../models/Follower";
-
+import ImageLink from "../models/ImageLink";
 
 export default class UserManager {
 
@@ -41,10 +41,16 @@ export default class UserManager {
         await user.save()
     }
 
-    public async updateProfile(user: any, name: string, bio: string): Promise<void> {
+    public async updateProfile(user: any, name: string, bio: string, avatarUrl?: string): Promise<void> {
         user.name = name
         user.bio = bio
+        if (avatarUrl)
+            user.avatarUrl = avatarUrl
 
         await user.save()
+    }
+
+    public async addNewUrlImage(ownerId: number, path: string): Promise<ImageLink> {
+        return ImageLink.create({ ownerId, path })
     }
 }

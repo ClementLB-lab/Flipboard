@@ -21,5 +21,6 @@ export default class Route {
         app.route("/user/profilefollow").post(async (req, res, next) => await this.userController.profileFollow(req, res).catch(next))
         app.route("/user/getFollowingById").get(async (req, res, next) => await this.userController.getFollowingById(req, res).catch(next))
         app.route("/user/editprofile").post(async (req, res, next) => await this.userController.editProfile(req, res).catch(next))
+        app.route("/user/upload/avatar").post(async (req, res, next) => await this.userController.uploadAvatar(req, res).catch(next))
     }
 }

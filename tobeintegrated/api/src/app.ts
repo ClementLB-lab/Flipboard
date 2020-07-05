@@ -7,7 +7,8 @@ export default class App {
     private route = new Route()
 
     constructor () {
-        this.app.use(bodyParser.json()); // to support JSON-encoded bodies
+        this.app.use(bodyParser.json({limit: '50mb'}));
+        this.app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
         this.route.Route(this.app)
     }
 }

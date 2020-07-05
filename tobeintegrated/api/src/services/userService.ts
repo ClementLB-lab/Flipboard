@@ -6,6 +6,9 @@ import validator from 'validator';
 import Result from '../utils/result';
 import * as pwdUtil from '../utils/password';
 import * as emailUtil from '../utils/email';
+import fs from 'fs';
+import mime from 'mime'
+import { noExtendLeft } from 'sequelize/types/lib/operators';
 
 export default class UserService {
 
@@ -240,6 +243,31 @@ export default class UserService {
             return Result.error("Impossible de récupérer votre profil avec votre token de connexion.")
 
         await this.userManager.updateProfile(user, name, bio)
+        return Result.success()
+    }
+    
+    /**
+     * Update avatar
+     *
+     * @param url The user's avatar url 
+     * @param token The token of the user
+     * 
+     * @return the error message or success
+     */
+    public async uploadAvatar(url: string, token: jwt.Token): Promise<Result> {
+        const user = await this.getByJWT(token)
+
+        if (!user)
+            return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+        if (url == undefined)
+            return Result.error("L'url de l'image transmis à l'api n'est pas valide.")
+
+        const image = await this.userManager.addNewUrlImage(user.id, url)
+
+        if (!image)
+            return Result.error("Un erreur s'est produite lors de l'ajout d'une nouvelle photo à votre collection.")
+
+        await this.userManager.updateProfile(user, user.name, user.bio, url)
         return Result.success()
     }
 }

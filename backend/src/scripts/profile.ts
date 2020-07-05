@@ -1,4 +1,5 @@
 $(function () {
+
     function onProfileFollowResponse(response)  {
         if (response.err == undefined) {
             var buttonVal = document.getElementById('follow-submit');
@@ -87,5 +88,5 @@ $(function () {
             var bioLength = document.getElementById('bio-length');
             bioLength.innerHTML = characterCount.toString() + "/160"
         }
-      });
+    });
 })

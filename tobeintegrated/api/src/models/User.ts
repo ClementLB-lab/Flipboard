@@ -31,9 +31,10 @@ export default class User extends S.Model<User> {
     @S.Column(S.DataType.INTEGER)
     magazines: number
 
-    @S.Default(0)
-    @S.Column(S.DataType.INTEGER)
-    avatarId: number
+    @S.Default("https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg")
+    @S.Comment("Avatar url")
+    @S.Column(S.DataType.TEXT)
+    avatarUrl: string
 
     @S.Comment("Biography")
     @S.Column(S.DataType.TEXT)

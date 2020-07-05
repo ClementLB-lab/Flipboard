@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/avatar.css" />
     <link rel="stylesheet" href="/styles/index.css" />
     <link rel="stylesheet" href="/styles/popup.css" />
 </head>
@@ -18,7 +19,11 @@
                     <div class="centered-column">
                         <header class="profile-header flex--column-to-row">
                             <div class="profile-header__author-avatar author-avatar">
-                                <img class="author-avatar__image image image--loaded" src="https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt="Avatar - Paris Match" width="80" height="80">
+                                <div class="avatar-edit">
+                                    <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                    <label for="imageUpload"></label>
+                                </div>
+                                <img id="imagePreview" class="author-avatar__image image image--loaded" src="<%= profile.avatarUrl %>" width="100" height="100">
                             </div>
                             <div class="section-header__text">
                                 <div class="profile-header__title-wrapper">
@@ -92,7 +97,7 @@
                                     <button id="save-profile-submit" class="section-header__button button--base button--secondary button--inline" type="button">Enregistrer</button>
                                 </div>
                             </div>
-                        </div>            
+                        </div>
                     </div>
                 </main>
                 <% } else { %>
@@ -102,6 +107,71 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+    <script>
+            // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAFkix_3HLOWfY_ehnPXIJ54Mk_95rPpiY",
+        authDomain: "epiflipboard-7bd24.firebaseapp.com",
+        databaseURL: "https://epiflipboard-7bd24.firebaseio.com",
+        projectId: "epiflipboard-7bd24",
+        storageBucket: "epiflipboard-7bd24.appspot.com",
+        messagingSenderId: "958850264456",
+        appId: "1:958850264456:web:7cb6b88e5b9035cc0f1e3d",
+        measurementId: "G-5M899XK1HJ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    async function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').attr('src', e.target.result);
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.onloadend = async function() {
+                var base64result = reader.result.split(',')[1];
+
+                // add new image in the storage
+                await firebase.storage().ref('users/1').child(input.files[0].name)
+                .putString(base64result, 'base64', { contentType: 'image/jpeg' }).then(function() {
+                    console.log('successfully uploaded !')
+                })
+
+                // download the image
+                firebase.storage().ref('users/1').child(input.files[0].name).getDownloadURL().then(imgUrl => {
+                    console.log('successfully downloaded !')
+                    console.log("L'url de votre nouvel avatar : " + imgUrl)
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/backapi/user/upload/avatar",
+                        data: {
+                            url: imgUrl
+                        },
+                        success: (response) => uploadAvatarResponse(response),
+                        error: (_) => alert("Erreur inconnue, veuillez réessayer")
+                    });
+                })
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    function uploadAvatarResponse(response)  {
+        if (response.err != undefined)
+            console.log(response.err);
+    }
+
+    $("#imageUpload").change(function() {
+        readURL(this);
+    });
+
+    </script>
     <script src="/scripts/profile.js"></script>
 </body>
 </html>

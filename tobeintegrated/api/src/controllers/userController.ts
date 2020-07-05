@@ -56,7 +56,8 @@ export default class UserController {
                 id: user.id,
                 followers: user.followers,
                 magazines: user.magazines,
-                bio: user.bio
+                avatarUrl: user.avatarUrl,
+                bio: user.bio,
             }
         } else
             result = user
@@ -298,4 +299,33 @@ export default class UserController {
         else
             return res.status(200).json({ success: false, err: result.getError() })
     }
+
+    /**
+     * POST
+     *
+     * Update user's avatar
+     *
+     * body {
+     *  image: base64encoded
+     *  token: The JWT auth token
+     * }
+     *
+     * Return :
+     * 200 - data {
+     *      success: whether the account has successfully be upgraded to host account
+     *      err: Potential error message (FR)
+     * }
+     *
+     */
+    public async uploadAvatar(req: Request, res: Response) {
+        const { url, token } = req.body;
+
+        const result = await this.userService.uploadAvatar(url, token)
+
+        if (result.isSuccessful())
+            return res.status(200).json({ success: true });
+        else
+            return res.status(200).json({ success: false, err: result.getError() })
+    }
+
 }
