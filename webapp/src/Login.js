@@ -1,16 +1,15 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default function Help()
+export default function Login()
 {
     const history = useHistory();
     const goHome = () => history.push("/");
 
     return (
         <div>
-            <p>HELLO</p>
             <span>
-                <button onClick={goHome}>Flipboard</button>
+                <button onClick={goHome}>Page d'accueil</button>
             </span>
         </div>
     );
