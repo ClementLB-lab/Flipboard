@@ -85,12 +85,12 @@ class App extends React.Component
                 <div>
                     <div>
                         <header style={brandBanner}>
-                            <h1 style={brandBannerHeader} class="brand-banner_header">
+                            <h1 style={brandBannerHeader}>
                                 <p>Soyez informé</p>
                                 <p>Soyez inspiré</p>
                                 <hr style={brandBannerLine}/>
                             </h1>
-                            <p>Des histoires créés pour vous</p>
+                            <p>Des histoires sélectionnées pour vous</p>
                         </header>
                     </div>
                 </div>

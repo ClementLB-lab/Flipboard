@@ -25,7 +25,7 @@ function Footer({ children }) {
                     <a style={text} href="#">Se connecter</a> . 
                     <a style={text} href="#">Qui sommes-nous</a> . 
                     <a style={text} href="#">Publishers</a> . 
-                    <a style={text} href="#">Aide</a>
+                    <a style={text} href="/help">Aide</a>
                 </p>
                 <p style={text}>Flipboard &copy; 2020</p>
             </div>
