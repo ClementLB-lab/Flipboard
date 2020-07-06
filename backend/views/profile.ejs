@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/styles/avatar.css" />
     <link rel="stylesheet" href="/styles/index.css" />
     <link rel="stylesheet" href="/styles/popup.css" />
+    <link rel="stylesheet" href="/styles/mag.css" />
 </head>
 
 <body class="">
@@ -57,7 +58,7 @@
                                 </div>
                             <% }  %>
                         </header>
-                        <div class="hover_bkgr_fricc">
+                        <div id="edit-user" class="hover_bkgr_fricc">
                             <span class="helper"></span>
                             <div>
                                 <div class="popupCloseButton">&times;</div>
@@ -80,16 +81,11 @@
                                             </div>
                                         </div>
                                     </label>
-                                    <div class="css-1dbjc4n r-18u37iz r-utggzx">
-                                        <div class="css-1dbjc4n r-13awgt0 r-eqz5dr">
+                                    <div aria-live="polite" class="css-1dbjc4n">
+                                        <div dir="auto" class="css-901oao r-173mn98 r-1re7ezh r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-glunga r-qvutc0">
+                                            <span id="bio-length" class="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0">0/160
 
-                                        </div>
-                                        <div aria-live="polite" class="css-1dbjc4n">
-                                            <div dir="auto" class="css-901oao r-173mn98 r-1re7ezh r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-glunga r-qvutc0">
-                                                <span id="bio-length" class="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0">0/160
-
-                                                </span>
-                                            </div>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -97,6 +93,61 @@
                                     <button id="save-profile-submit" class="section-header__button button--base button--secondary button--inline" type="button">Enregistrer</button>
                                 </div>
                             </div>
+                        </div>
+                        <div id="create-mag" class="hover_bkgr_fricc">
+                            <span class="helper"></span>
+                            <div>
+                                <div class="popupCloseButton">&times;</div>
+                                <h1 class="layout-section__header ui-text--title">Créer un nouveau magazine</h1>
+                                <div class="message message--error" id="errmsg2"></div>
+                                <p>Titre<br /></p>
+                                <div class="input-field">
+                                    <input type="text" id="mag-name" name="name" class="form-control" placeholder="Titre" value="">
+                                </div>
+                                <div class="css-1dbjc4n r-1j3t67a r-1w50u8q">
+                                    <label class="css-1dbjc4n r-1u4rsef r-rull8r r-wgabs5 r-1awa8pu r-1jkafct r-18u37iz">
+                                        <div class="css-1dbjc4n r-16y2uox r-1wbh5a2">
+                                            <div dir="auto" class="css-901oao css-bfa6kz r-k200y r-1re7ezh r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-utggzx r-glunga r-qvutc0">
+                                                <span class="css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0">Description</span>
+                                            </div>
+                                            <div class="css-1dbjc4n r-18u37iz r-16y2uox r-1wbh5a2 r-1udh08x">
+                                                <div dir="auto" class="mag">
+                                                    <textarea id="mag-field" autocapitalize="sentences" autocomplete="on" autocorrect="on" maxlength="160" name="description" placeholder="Ajoutez une description (facultatif)" spellcheck="true" dir="auto" style="height: 85px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <div class="field-block--checkbox">
+                                        <label class="labeled-checkbox">
+                                            <input type="checkbox" class="checkbox labeled-checkbox__input" name="isPublic" checked="">
+                                            <div class="ui-text--body-2">Privé</div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <footer class="modal__controls">
+                                    <button id="mag-cancel-submit" class="button--base button--secondary" type="button">Annuler</button>
+                                    <button id="mag-create-submit" class="button--base button--primary" type="button" disabled="">Enregistrer</button>
+                                </footer>
+                            </div>
+                        </div>
+ 
+
+
+                        <div class="profile-magazines layout-section">
+                            <section class="section-tiles layout-section">
+                                <span id="magazines" class="page-anchor">
+
+                                </span><h2 class="layout-section__header ui-text--title">Magazines</h2>
+                                <ul id="allMagazines" class="section-tiles__list">
+                                    <a id="addMagazine" class="float">
+                                        <i class="fa fa-plus my-float"></i>
+                                    </a>
+                                </ul>
+                            </section>
+                            <section class="section-tiles layout-section"></section>
+                            <section class="section-tiles layout-section"></section>
+                            <section class="section-tiles layout-section"></section>
+                            <section class="section-tiles layout-section"></section>
                         </div>
                     </div>
                 </main>

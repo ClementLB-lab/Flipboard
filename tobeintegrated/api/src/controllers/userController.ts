@@ -328,4 +328,32 @@ export default class UserController {
             return res.status(200).json({ success: false, err: result.getError() })
     }
 
+    /**
+     * POST
+     *
+     * Create new magazine
+     *
+     * body {
+     *  name: string
+     *  description: string
+     *  token: The JWT auth token
+     * }
+     *
+     * Return :
+     * 200 - data {
+     *      success: whether the account has successfully be upgraded to host account
+     *      err: Potential error message (FR)
+     * }
+     *
+     */
+    public async createMagazine(req: Request, res: Response) {
+        const { name, description, token } = req.body;
+
+        const result = await this.userService.createMagazine(name, description, token)
+
+        if (result.isSuccessful())
+            return res.status(200).json({ success: true });
+        else
+            return res.status(200).json({ success: false, err: result.getError() })
+    }
 }

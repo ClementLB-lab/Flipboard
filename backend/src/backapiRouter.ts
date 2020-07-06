@@ -18,5 +18,7 @@ export default class BackRouter {
         app.route("/backapi/user/profilefollow").post(this.userController.profileFollow);
         app.route("/backapi/user/editprofile").post(this.userController.editProfile);
         app.route("/backapi/user/upload/avatar").post(this.userController.uploadAvatar);
+
+        app.route("/backapi/user/createmagazine").post(this.userController.createMagazine);
     }
 }

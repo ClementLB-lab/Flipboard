@@ -270,4 +270,29 @@ export default class UserService {
         await this.userManager.updateProfile(user, user.name, user.bio, url)
         return Result.success()
     }
+
+    /**
+     * Create a new magazine
+     *
+     * @param name The name
+     * @param name The description
+     * @param token The token of the user
+     * 
+     * @return the error message or success
+     */
+    public async createMagazine(name: string, description: string, token: jwt.Token): Promise<Result> {
+        const user = await this.getByJWT(token)
+
+        if (!user)
+            return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+        if (name == undefined)
+            return Result.error("Impossible de créer un magazine qui ne porte aucun nom.")
+
+        const Magazine = await this.userManager.createMagazine(user.id, name, description)
+        if (!Magazine)
+            return Result.error("Le magazine n'a pas pu être créer.")
+
+        await this.userManager.increaseNbMagazine(user, user.magazines + 1)
+        return Result.success()
+    }
 }

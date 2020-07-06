@@ -154,4 +154,17 @@ export default class UserController {
 
         return res.status(200).json(result)
     }
+    
+    /**
+     * POST
+     * see API's doc
+     */
+    public async createMagazine(req: express.Request, res: express.Response) {
+        const { name, description } = req.body;
+        const token = jwtUtils.getAuthToken(req)
+
+        const result = await api.post("/user/createmagazine", { name, description, token })
+
+        return res.status(200).json(result)
+    }
 }

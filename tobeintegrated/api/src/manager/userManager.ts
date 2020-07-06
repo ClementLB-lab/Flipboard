@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Follower from "../models/Follower";
 import ImageLink from "../models/ImageLink";
+import Magazine from "../models/Magazine";
 
 export default class UserManager {
 
@@ -52,5 +53,14 @@ export default class UserManager {
 
     public async addNewUrlImage(ownerId: number, path: string): Promise<ImageLink> {
         return ImageLink.create({ ownerId, path })
+    }
+
+    public async createMagazine(ownerId: number, name: string, description: string): Promise<Magazine> {
+        return Magazine.create({ ownerId, name, description })
+    }
+
+    public async increaseNbMagazine(user: any, nbMagazines: number): Promise<void> {
+        user.magazines = nbMagazines
+        await user.save()
     }
 }
