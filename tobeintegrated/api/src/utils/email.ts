@@ -3,13 +3,16 @@ import nodemailer from 'nodemailer'
 export const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "notifications.flipboard@gmail.com",
-    pass: "Undershit20!"
+    user: "notifications.epiflipboard@gmail.com",
+    pass: "asxDR5thnJI9"
+  },
+  tls:{
+    rejectUnauthorized: false
   }
 })
 
 export const getPasswordResetURL = (user, token) =>
-  `http://localhost/resetpwd/${user.id}/${token}`
+  `http://localhost:8080/resetpwd/${user.id}/${token}`
 
 export const resetPasswordTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN
