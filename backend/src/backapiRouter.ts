@@ -1,8 +1,11 @@
 import express from 'express'
 import UserController from './controllers/backapi/userController'
+import MagazineController from './controllers/backapi/magazineController'
 
 export default class BackRouter {
     userController = new UserController()
+    magazineController = new MagazineController()
+
 
     public Route(app: express.Application) {
 
@@ -20,5 +23,10 @@ export default class BackRouter {
         app.route("/backapi/user/upload/avatar").post(this.userController.uploadAvatar);
 
         app.route("/backapi/user/createmagazine").post(this.userController.createMagazine);
+        app.route("/backapi/user/getFollowers").get(this.userController.getFollowers);
+
+
+        // Magazine
+        app.route("/backapi/magazine/getMagazinesByOwnerId").get(this.magazineController.getMagazinesByOwnerId);
     }
 }

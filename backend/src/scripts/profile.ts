@@ -1,5 +1,73 @@
 $(function () {
 
+    function printFollower(followerId, followerName,  avatarUrl) {
+        var followerField = document.getElementById('list-followers');
+        var nodeList = document.createElement("li"); // Create a <li> node
+        var divWrapper = document.createElement("div");
+        divWrapper.setAttribute("class","section-tiles__tile-wrapper");
+
+        var aLink = document.createElement("a"); // Create a <a> node
+        aLink.setAttribute("class","section-tiles__tile media-link internal-link");
+        aLink.setAttribute("role","link");
+        aLink.setAttribute("href","http://localhost:8080/profile?id=" + followerId);
+
+        var divImage = document.createElement("div"); // Create a <div> node
+        divImage.setAttribute("class","section-tiles__image");
+
+        var divCroppedImage = document.createElement("div"); // Create a <div> node
+        divCroppedImage.setAttribute("class","cropped-image media-container");
+
+
+        var Image = document.createElement("img"); // Create a <div> node
+        Image.setAttribute("src", avatarUrl);
+        Image.setAttribute("style", "position: absolute; width: 153px; height: 153px; top: -2px; left: 0px;");
+
+
+        var divOverlay = document.createElement("div"); // Create a <div> node
+        divOverlay.setAttribute("class","section-tiles__tile-overlay");
+
+        var divContent = document.createElement("div"); // Create a <div> node
+        divContent.setAttribute("class","section-tiles__tile-content");
+
+        var title = document.createElement("h3");
+        title.setAttribute("class","section-tiles__title ui-text--title--small");
+        title.innerText = followerName;
+        
+        divContent.appendChild(title)
+        divCroppedImage.appendChild(Image)
+        divImage.appendChild(divCroppedImage)
+        aLink.appendChild(divImage)
+        aLink.appendChild(divOverlay)
+        aLink.appendChild(divContent)
+        divWrapper.appendChild(aLink)
+        nodeList.appendChild(divWrapper)
+        followerField.appendChild(nodeList)
+    }
+
+    function onSearchMagazineResponse(response)  {
+        console.log(response)
+        printFollower(response.followerId, response.followerName, response.avatarUrl)
+    }
+
+    window.onload = function () {
+
+        console.log("get followers...")
+        var id = $("#profile-id").val();
+
+        console.log("Id de la personne : " + id)
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/backapi/user/getFollowers",
+            data: {
+                id: id
+            },
+            success: (response) => onSearchMagazineResponse(response),
+            error: (_) => alert("Erreur inconnue, veuillez réessayer")
+        });
+    }
+
     function onProfileFollowResponse(response)  {
         if (response.err == undefined) {
             var buttonVal = document.getElementById('follow-submit');

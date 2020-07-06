@@ -33,14 +33,11 @@ export default class UserController {
                 followState = "Se désabonner"
         }
 
-        let magazine = await api.get("/magazine/getMagazinesByOwnerId", { id })
-
         const args = {
             loggedin: self != null,
             isHostProfile: profile.host || false,
             isOwnProfile: self && (self.id == id),
             profile,
-            magazines: magazine,
             followState: followState
         }
 

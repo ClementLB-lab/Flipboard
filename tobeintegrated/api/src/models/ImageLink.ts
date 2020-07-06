@@ -12,7 +12,7 @@ export default class ImageLink extends S.Model<ImageLink> {
     @S.Column(S.DataType.INTEGER)
     id: number
 
-    @S.ForeignKey(() => User)   
+    @S.ForeignKey(() => User)
     @S.Column(S.DataType.INTEGER)
     ownerId: number
 

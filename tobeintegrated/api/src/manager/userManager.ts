@@ -63,4 +63,8 @@ export default class UserManager {
         user.magazines = nbMagazines
         await user.save()
     }
+
+    public async getFollowers(userId: number): Promise<Follower[]> {
+        return Follower.findAll({ where: { publisherId: userId } })
+    }
 }

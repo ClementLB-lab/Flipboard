@@ -26,7 +26,6 @@ export default class UserController {
         return res.status(200).json(user)
     }
 
-
     /**
      * GET
      *
@@ -327,6 +326,41 @@ export default class UserController {
         else
             return res.status(200).json({ success: false, err: result.getError() })
     }
+
+    /**
+     * GET
+     *
+     * query {
+     *      id: User id
+     * }
+     *
+     * return:
+     * 200 -
+     *  data :
+     *      If retrieving information from another user, get public field:
+     *          name, followers, magazines, id
+     *      otherwise get all fields
+     */
+    public async getFollowers(req: Request, res: Response) {
+        const id = parseInt(req.query.id as string);
+
+        const follower = await this.userService.getFollowers(id)
+
+        let result;
+        if (follower != undefined) { // ici
+            const user = await this.userService.getById(follower[0].followerId)
+            if (user) {
+                result = {
+                    followerId: follower[0].followerId,
+                    followerName: user.name,
+                    avatarUrl: user.avatarUrl
+                }
+            }
+        }
+        return res.status(200).json(result)
+    }
+
+
 
     /**
      * POST

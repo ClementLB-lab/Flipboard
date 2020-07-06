@@ -154,6 +154,16 @@ export default class UserController {
 
         return res.status(200).json(result)
     }
+
+    /**
+     * GET
+     * see API's doc
+     */
+    public async getFollowers(req: express.Request, res: express.Response) {
+        const result = await api.get("/user/getFollowers", req.query)
+
+        return res.status(200).json(result)
+    }
     
     /**
      * POST

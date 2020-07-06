@@ -7,12 +7,11 @@ import User from "./User"
 @S.Table
 export default class Magazine extends S.Model<Magazine> {
     
-    // @S.PrimaryKey
-    // @S.AutoIncrement
-    // @S.Column(S.DataType.INTEGER)
-    // id: number
+    @S.PrimaryKey
+    @S.AutoIncrement
+    @S.Column(S.DataType.INTEGER)
+    id: number
 
-    @S.ForeignKey(() => User)   
     @S.Column(S.DataType.INTEGER)
     ownerId: number
 

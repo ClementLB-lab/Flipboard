@@ -35,7 +35,6 @@ export default class UserService {
         const result = await this.userManager.getById(id);
 
         return result
-
     }
 
     /**
@@ -270,6 +269,20 @@ export default class UserService {
         await this.userManager.updateProfile(user, user.name, user.bio, url)
         return Result.success()
     }
+
+    /**
+     * Gets a user from an ID
+     * @return the user or null if no such user exists
+     */
+    public async getFollowers(id: number): Promise<Follower[]> {
+        if (!id)
+            return null
+
+        const followers = await this.userManager.getFollowers(id);
+
+        return followers;
+    }
+
 
     /**
      * Create a new magazine

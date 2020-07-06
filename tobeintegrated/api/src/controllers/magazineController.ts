@@ -19,10 +19,10 @@ export default class MagazineController {
      * 200 - data : Magazine
      */
     public async getMagazinesByOwnerId(req: Request, res: Response) {
-        const id = req.query.id as number
+        const { id } = req.body;
 
-        const magazines = await this.magazineService.getMagazinesByOwnerId(id)
+        const magazine = await this.magazineService.getMagazinesByOwnerId(id)
 
-        return res.status(200).json(magazines)
+        return res.status(200).json(magazine)
     }
 }

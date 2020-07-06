@@ -16,8 +16,10 @@ export default class MagazineService {
         if (!id)
             return null
 
-        const result = await this.magazineManager.getMagazinesByOwnerId(id);
+        const magazine = await this.magazineManager.getMagazinesByOwnerId(id);
+//        if (!magazine)
+//            return null
 
-        return result
+        return magazine
     }
 }
