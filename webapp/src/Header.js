@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Search from "./Search";
 import { useHistory } from 'react-router-dom';
 
-export default function Header()
+export default function Header({onSearch})
 {
     const styles = useStyles();
     const history = useHistory();
@@ -14,11 +14,9 @@ export default function Header()
         <AppBar position="static">
             <Toolbar>
                     <Typography className={styles.title} variant="h6" noWrap>
-                            <span className="input-group-btn">
-                                <button onClick={goHome}>Flipboard</button>
-                            </span>
+                        Flipboard
                     </Typography>
-                <Search />
+                <Search onSearch={onSearch}/>
 
                 <div className={styles.registration}>
                     <div>
