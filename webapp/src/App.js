@@ -3,9 +3,40 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme";
 import Http from "./Http";
 import Header from "./Header";
+import Footer from "./Footer";
 import Article from "./Article";
 
 const http = new Http();
+
+var brandBanner = {
+    textAlign: 'center',
+    padding: '0'
+}
+
+var brandBannerHeader = {
+    marginBottom: '15px',
+    lineHeight: '40px',
+    fontFamily: 'FaktCondensed,AvenirNextCondensed-Medium,Segoe UI,sans-serif',
+    fontWeight: '900',
+    textTransform: 'uppercase',
+    color: 'var(--color--grey-scale--primary)',
+    display: 'inline-block',
+    fontSize: '45px'
+}
+
+var brandBannerLine = {
+    display: 'block',
+    border: 'none',
+    marginTop: '0.5em',
+    marginBottom: '0.5em',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderStyle: 'inset',
+    borderWidth: '1px',
+    backgroundColor: 'red',
+    width: '33vh',
+    height: '3px'
+}
 
 class App extends React.Component
 {
@@ -50,7 +81,22 @@ class App extends React.Component
             <ThemeProvider theme={theme}>
                 <div>
                     <Header />
-                    {this.generateArticles()}
+                </div>
+                <div>
+                    <div>
+                        <header style={brandBanner}>
+                            <h1 style={brandBannerHeader} class="brand-banner_header">
+                                <p>Soyez informé</p>
+                                <p>Soyez inspiré</p>
+                                <hr style={brandBannerLine}/>
+                            </h1>
+                            <p>Des histoires créés pour vous</p>
+                        </header>
+                    </div>
+                </div>
+                {this.generateArticles()}
+                <div>
+                    <Footer />
                 </div>
             </ThemeProvider>
         );

@@ -3,7 +3,7 @@ require("dotenv").config();
 
 async function main():Promise<void>
 {
-	new Server(parseInt(process.env.PORT || "3000"));
+	new Server(parseInt(process.env.PORT || "3001"));
 }
 
 main().catch((err:Error) => {

@@ -14,6 +14,13 @@ export default function Header()
                     Flipboard
                 </Typography>
                 <Search />
+
+                <div className={styles.registration}>
+                    <div class="btn-link-login">
+                        <img src="/images/user_icon.png" class="nav_icon" />
+                        <p class="nav_text animation">Connexion / Inscription</p>
+                    </div>
+                </div>
             </Toolbar>
         </AppBar>
     );
@@ -22,5 +29,11 @@ export default function Header()
 const useStyles = makeStyles((theme) => ({
     title: {
         marginLeft: theme.spacing(2)
+    },
+
+    registration: {
+        alignItems: 'flex-end',
+        textAlign: 'left',
+        alignSelf: 'stretch'
     }
 }));
