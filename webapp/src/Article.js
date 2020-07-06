@@ -11,7 +11,7 @@ export default function Article({title, date, author, description, body, image})
             <CardMedia
                 component="img"
                 alt="Article illustration"
-                height={(image.height > 1000 ? 1000 : image.height) * 0.66}
+                height={(image.height > 1000 ? 1000 : image.height) * 0.75}
                 image={image.url}
                 title={title}
             />
@@ -38,6 +38,7 @@ const useStyles = makeStyles({
     root: {
         maxWidth: 700,
         margin: "auto",
+        marginBottom: 10,
         backgroundColor: "primary.main"
     }
 });

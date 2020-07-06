@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import App from './App';
+import Login from './Login';
+import About from './About';
+import Publishers from './Publishers';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/publishers" component={Publishers} />
+      </Switch>
+    </BrowserRouter>
+  </div>,
+    // <App />
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

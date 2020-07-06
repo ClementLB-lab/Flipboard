@@ -1,30 +1,54 @@
 import React from 'react';
-import { InputBase } from "@material-ui/core";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { Button, InputBase } from "@material-ui/core";
+import { fade, withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 
-export default function Search()
+class Search extends React.Component
 {
-    const styles = useStyles();
+    state = {
+        searchValue: ""
+    };
 
-    return (
-        <div className={styles.searchBar}>
-            <div className={styles.searchIcon}>
-                <SearchIcon />
+    onInputChange = (e) =>
+    {
+        this.setState({
+            searchValue: e.target.value
+        });
+    }
+    onSubmit = () =>
+    {
+        this.props.onSearch(this.state.searchValue);
+    }
+    
+    render()
+    {
+        const styles = this.props.classes;
+        return (
+            <div className={styles.container}>
+                <div className={styles.searchBar}>
+                    <div className={styles.searchIcon}>
+                        <SearchIcon />
+                    </div>
+                    <InputBase
+                        placeholder="Search..."
+                        classes={{
+                            root: styles.inputRoot,
+                            input: styles.inputInput
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        onChange={this.onInputChange}
+                    />
+                </div>
+                <Button onClick={this.onSubmit} variant="contained">Search</Button>
             </div>
-            <InputBase
-                placeholder="Search..."
-                classes={{
-                    root: styles.inputRoot,
-                    input: styles.inputInput
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-            />
-        </div>
-    );
+        );
+    }
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
+    container: {
+        display: "flex"
+    },
     searchBar: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -58,4 +82,6 @@ const useStyles = makeStyles((theme) => ({
         transition: theme.transitions.create('width'),
         width: '100%'
     },
-}));
+});
+
+export default withStyles(styles, {withTheme: true})(Search);

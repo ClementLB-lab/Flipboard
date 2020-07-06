@@ -44,15 +44,21 @@ class App extends React.Component
         articles: []
     };
 
-    static getArticles = async () =>
+    static getArticles = async (tag) =>
     {
-        let data = await http.get('/news?tag=Microsoft');
+        let data = await http.get(`/news?tag=${tag}`);
 
         if (data.value) {
             console.log(data.value);
             return (data.value);
         }
         return ([]);
+    }
+    setArticles = async (tag) =>
+    {
+        this.setState({
+            articles: await App.getArticles(tag)
+        });
     }
     generateArticles = () =>
     {
@@ -65,6 +71,7 @@ class App extends React.Component
                             description={article.description}
                             body={article.body}
                             date={article.datePublished}
+                            author={article.provider.name}
                             image={{
                                 url: article.image.url,
                                 height: article.image.height
@@ -80,21 +87,23 @@ class App extends React.Component
         return (
             <ThemeProvider theme={theme}>
                 <div>
-                    <Header />
+                    <Header onSearch={this.setArticles.bind(this)} />
                 </div>
                 <div>
                     <div>
                         <header style={brandBanner}>
-                            <h1 style={brandBannerHeader} class="brand-banner_header">
+                            <h1 style={brandBannerHeader}>
                                 <p>Soyez informé</p>
                                 <p>Soyez inspiré</p>
                                 <hr style={brandBannerLine}/>
                             </h1>
-                            <p>Des histoires créés pour vous</p>
+                            <p>Des histoires sélectionnées pour vous</p>
                         </header>
                     </div>
                 </div>
-                {this.generateArticles()}
+                <div>
+                    {this.generateArticles()}
+                </div>
                 <div>
                     <Footer />
                 </div>
