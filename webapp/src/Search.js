@@ -17,7 +17,8 @@ class Search extends React.Component
     }
     onSubmit = () =>
     {
-        this.props.onSearch(this.state.searchValue);
+        if (this.state.value.length > 2)
+            this.props.onSearch(this.state.searchValue);
     }
     
     render()
@@ -58,11 +59,7 @@ const styles = (theme) => ({
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
+        width: '100%'
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
