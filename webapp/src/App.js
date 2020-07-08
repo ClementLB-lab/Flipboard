@@ -1,104 +1,48 @@
 import React from 'react';
-import { ThemeProvider, withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme";
 import Http from "./Http";
 import Header from "./Header";
-import ArticleList from "./ArticleList";
 import Footer from "./Footer";
-import Article from "./Article";
+import Home from "./Home";
+import Login from "./Login";
+import Publishers from "./Publishers";
+import About from "./About";
 
 const http = new Http();
 
-class App extends React.Component
+export default function App()
 {
-    state = {
-        articles: []
-    };
+    const [articles, setArticles] = React.useState([]);
     
-    static getArticles = async (tag) =>
+    const getArticles = async (tag) =>
     {
         let data = await http.get(`/news?tag=${tag}`);
 
-        if (data.value) {
-            console.log(data.value);
-            return (data.value);
+        if (!data.value) {
+            return;
         }
-        return ([]);
+        setArticles(data.value);
     }
-    setArticles = async (tag) =>
-    {
-        this.setState({
-            articles: await App.getArticles(tag)
-        });
-    }
-    render()
-    {
-        const styles = this.props.classes;
-        return (
+    return (
             <ThemeProvider theme={theme}>
-                <div>
-                    <Header onSearch={this.setArticles.bind(this)} />
-                </div>
-                <div>
-                    <div className={styles.brandBanner}>
-                        <h1 className={styles.brandBannerHeader}>
-                            <p>Soyez informé</p>
-                            <p>Soyez inspiré</p>
-                            <hr className={styles.brandBannerLine}/>
-                        </h1>
-                        <p>Des histoires sélectionnées pour vous</p>
-                    </div>
-                    <div className={styles.buttonsContainer}>
-                        <Button className={styles.button} variant="contained" color="secondary">Login</Button>
-                        <Button className={styles.button} variant="contained" color="secondary">Register</Button>
-                    </div>
-                </div>
-                <div>
-                    <ArticleList articles={this.state.articles} />
-                </div>
-                <div>
-                    <Footer />
-                </div>
+                <Header onSearch={getArticles} />
+                <Switch>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                    <Route path="/publishers">
+                        <Publishers />
+                    </Route>
+                    <Route path="/about">
+                        <About />
+                    </Route>
+                     <Route path="/">
+                        <Home articles={articles} />
+                    </Route>
+                </Switch>
+                <Footer />
             </ThemeProvider>
-        );
-    }
+     );
 }
-
-const classes = (theme) => ({
-    buttonsContainer: {
-        display: "flex",
-        justifyContent: "center"
-    },
-    button: {
-        margin: theme.spacing(1)
-    },
-    brandBanner: {
-        textAlign: 'center',
-        padding: '0'
-    },
-    brandBannerHeader: {
-        marginBottom: '15px',
-        lineHeight: '40px',
-        fontFamily: 'FaktCondensed,AvenirNextCondensed-Medium,Segoe UI',
-        fontWeight: '900',
-        textTransform: 'uppercase',
-        color: 'var(--color--grey-scale--primary)',
-        display: 'inline-block',
-        fontSize: '45px'
-    },
-    brandBannerLine: {
-        display: 'block',
-        border: 'none',
-        marginTop: '0.5em',
-        marginBottom: '0.5em',
-        margin: 'auto',
-        borderStyle: 'inset',
-        borderWidth: '1px',
-        backgroundColor: 'red',
-        width: '33vh',
-        height: '3px'
-    }
-});
-
-export default withStyles(classes, {withTheme: true})(App);
