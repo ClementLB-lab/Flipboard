@@ -1,38 +1,44 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
+import AnimatedCardContainer from "./AnimatedCardContainer";
 import ArticleList from "./ArticleList";
 
-class Home extends React.Component
+export default function Home({ articles })
 {
-    render()
-    {
-        const styles = this.props.classes;
-        return (
-            <>
-                <div>
-                    <div className={styles.brandBanner}>
-                        <h1 className={styles.brandBannerHeader}>
-                            <p>Soyez informé</p>
-                            <p>Soyez inspiré</p>
-                            <hr className={styles.brandBannerLine}/>
-                            </h1>
-                        <p>Des histoires sélectionnées pour vous</p>
-                    </div>
-                    <div className={styles.buttonsContainer}>
-                        <Button className={styles.button} variant="contained" color="secondary">Login</Button>
-                        <Button className={styles.button} variant="contained" color="secondary">Register</Button>
-                    </div>
-                </div>
-                <div>
-                    <ArticleList articles={this.props.articles} />
-                </div>
-            </>
-        );
-    }
+    const styles = useStyles();
+    const history = useHistory();
+
+    const onClickOnLogin = () => {
+        history.push("login");
+    };
+    const onClickOnRegister = () => {
+        history.push("register");
+    };
+
+    return (
+        <AnimatedCardContainer>
+            <div className={styles.brandBanner}>
+                <h1 className={styles.brandBannerHeader}>
+                    <p>Be informed</p>
+                    <p>Be inspired</p>
+                    <hr className={styles.brandBannerLine}/>
+                    </h1>
+                <p>Histories selected for you.</p>
+            </div>
+            <div className={styles.buttonsContainer}>
+                <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnLogin}>Login</Button>
+                <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnRegister}>Register</Button>
+            </div>
+            <div>
+                <ArticleList articles={articles} />
+            </div>
+        </AnimatedCardContainer>
+    );
 }
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     buttonsContainer: {
         display: "flex",
         justifyContent: "center"
@@ -45,6 +51,7 @@ const styles = (theme) => ({
         padding: '0'
     },
     brandBannerHeader: {
+        marginTop: 0,
         marginBottom: '15px',
         lineHeight: '40px',
         fontFamily: 'FaktCondensed,AvenirNextCondensed-Medium,Segoe UI',
@@ -66,6 +73,4 @@ const styles = (theme) => ({
         width: '33vh',
         height: '3px'
     }
-});
-
-export default withStyles(styles, {withTheme: true})(Home);
+}));

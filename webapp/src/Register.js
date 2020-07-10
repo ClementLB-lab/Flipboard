@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CardContent, Typography, TextField, Button } from "@material-ui/core";
 import AnimatedCardContainer from "./AnimatedCardContainer";
 
-export default function Login()
+export default function Register()
 {
 	const styles = useStyles();
     const history = useHistory();
@@ -18,15 +18,16 @@ export default function Login()
     	<AnimatedCardContainer>
     		<CardContent>
     			<Typography variant="h4" component="h2" className={styles.title}>
-    				Login to your account
+    				Join the club of well-informed people!
     			</Typography>
 			    <form autoComplete="off">
 			       	<TextField label="Email address" variant="filled" className={styles.input} fullWidth />
 			       	<TextField type="password" label="Password" variant="filled" className={styles.input} fullWidth />
-			       	<Button variant="contained" color="primary" onClick={onSubmit}>Login!</Button>
+			       	<TextField type="password" label="Confirm your password" variant="filled" className={styles.input} fullWidth />
+                    <Button variant="contained" color="primary" onClick={onSubmit}>Register!</Button>
 			    </form>
 		    </CardContent>
-	    </AnimatedCardContainer>
+        </AnimatedCardContainer>
     );
 }
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Search from "./Search";
-import { useHistory } from 'react-router-dom';
 import logo from './images/flipboard.png';
-import PersonIcon from "@material-ui/icons/Person";
 
 export default function Header({onSearch})
 {
@@ -14,6 +13,12 @@ export default function Header({onSearch})
     {
         history.push("/");
     };
+    const onLogin = () => {
+        history.push("/login");
+    }
+    const onRegister = () => {
+        history.push("/register");
+    }
 
     return (
         <AppBar position="static">
@@ -28,10 +33,8 @@ export default function Header({onSearch})
                     <Search onSearch={onSearch}/>
                 </div>
                 <div className={styles.registration}>
-                    <PersonIcon />
-                    <div>
-                        <p>Connexion / Inscription</p>
-                    </div>
+                    <Button variant="contained" onClick={onLogin}>Login</Button>
+                    <Button variant="contained" onClick={onRegister}>Register</Button>
                 </div>
             </Toolbar>
         </AppBar>
