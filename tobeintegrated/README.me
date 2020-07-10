@@ -1,0 +1,22 @@
+Le serveur tourne sur le port 3001.
+
+Pour lancer le serveur, il vous faut docker. https://docs.docker.com/get-docker/
+
+Avant de faire un "docker-compose up --build" à la racine de se sous-dossier (Flipboard/tobeintegrated/.), faites un "npm i" dans le sous dossier ./api. 
+
+Vous trouverez toutes les routes existantes dans le ./api/src/apiRouter
+
+Exemple d'utilisation : http://localhost:3001/user/register
+
+
+Vous recevrez un json en retour. 
+success: true si tous c'est bien déroulé, success: false si il y a une erreur.
+
+
+Si success : false, aller checker les erreurs avec "fieldsErrors" ou "err".
+
+
+Pour les routes login, register, resetpwd forgotpwd, resetcurrentpwd : l'erreur se trouve dans le "fieldsErrors" du json.
+Pour les autres routes, checker simplement "err".
+
+Certaines routes ne fonctionneront pas si vous votre token est expiré ou n'existe pas. Ce token est généré avec jsonwektoken lors de la connexion d'un utilisateur (donc avec la route /user/login)
