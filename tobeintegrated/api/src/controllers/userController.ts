@@ -289,9 +289,9 @@ export default class UserController {
      *
      */
     public async editProfile(req: Request, res: Response) {
-        const { name, bio, token } = req.body;
+        const { name, email, bio, token } = req.body;
 
-        const result = await this.userService.editProfile(name, bio, token)
+        const result = await this.userService.editProfile(name, email, bio, token)
 
         if (result.isSuccessful())
             return res.status(200).json({ success: true });

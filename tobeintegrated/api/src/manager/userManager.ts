@@ -43,8 +43,9 @@ export default class UserManager {
         await user.save()
     }
 
-    public async updateProfile(user: any, name: string, bio: string, avatarUrl?: string): Promise<void> {
+    public async updateProfile(user: any, name: string, email: string, bio: string, avatarUrl?: string): Promise<void> {
         user.name = name
+        user.email = email
         user.bio = bio
         if (avatarUrl)
             user.avatarUrl = avatarUrl
