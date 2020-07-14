@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import logo from './images/flipboard.png';
 import { makeStyles } from '@material-ui/core';
 
 export default function Publishers()
@@ -11,9 +10,6 @@ export default function Publishers()
 
     return (
         <div>
-            <span>
-                <img className={styles.icon} src={logo} alt="Flipboard Icon" />
-            </span>
             <div className={styles.brandBanner}>
                 <div>
                     <h1>
@@ -38,11 +34,6 @@ export default function Publishers()
 }
 
 const useStyles = makeStyles((theme) => ({
-    icon: {
-        margin: theme.spacing(0),
-        height: '15vh'
-    },
-
     brandBanner: {
         textAlign: 'center',
         marginRight: theme.spacing(10),
