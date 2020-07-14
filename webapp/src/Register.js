@@ -1,51 +1,85 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardContent, Typography, TextField, Button } from "@material-ui/core";
-import AnimatedCardContainer from "./AnimatedCardContainer";
-import Wallpaper from "./images/wallpaper.jpg";
+import { TextField, Button } from "@material-ui/core";
+import FormContainer from "./FormContainer";
+import Http from "./Http";
+
+const http = new Http();
 
 export default function Register()
 {
+    const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
     
-    const onSubmit = () => {
+    const filter = (data) => {
+        let errors = [];
 
+        if (data.name.length < 3) errors.push("Username is too short.");
+        if (data.password.length < 6) errors.push("Password is too short.");
+        if (data.password !== data.vpassword) errors.push("Passwords are not the same.");
+        if (errors.length > 0) {
+            setErrors(errors);
+            return (false);
+        }
+        return (true);
+    }
+
+    const onSubmit = async (data) => {
+        //Todo
     };
 
     return (
-        <div className={styles.container}>
-        	<AnimatedCardContainer>
-        		<CardContent>
-        			<Typography variant="h4" component="h2" className={styles.title}>
-        				Join the club of well-informed people!
-        			</Typography>
-    			    <form autoComplete="off">
-    			       	<TextField label="Email address" variant="filled" className={styles.input} fullWidth />
-    			       	<TextField type="password" label="Password" variant="filled" className={styles.input} fullWidth />
-    			       	<TextField type="password" label="Confirm your password" variant="filled" className={styles.input} fullWidth />
-                        <Button variant="contained" color="primary" onClick={onSubmit}>Register!</Button>
-    			    </form>
-    		    </CardContent>
-            </AnimatedCardContainer>
-        </div>
+        <FormContainer 
+            title="Join the club of informed people!" 
+            errors={errors} 
+            filter={filter}
+            onSubmit={onSubmit}
+        >
+            <TextField
+                label="Name"
+                name="name"
+                variant="filled"
+                minLength={3}
+                className={styles.input}
+                fullWidth
+                required
+            />
+            <TextField
+                type="email"
+                name="email"
+                label="Email address" 
+                variant="filled" 
+                className={styles.input} 
+                fullWidth
+                required
+            />
+            <TextField 
+                type="password"
+                name="password"
+                label="Password" 
+                variant="filled"
+                minLength={6} 
+                className={styles.input} 
+                fullWidth
+                required
+            />
+            <TextField 
+                type="password"
+                name="vpassword"
+                label="Confirm your password" 
+                variant="filled"
+                minLength={6}
+                className={styles.input} 
+                fullWidth
+                required
+            />
+            <Button type="submit" variant="contained" color="primary">Register!</Button>
+        </FormContainer>
     );
 }
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        backgroundImage: `url(${Wallpaper})`,
-        backgroundSize: "cover",
-        minHeight: 800
-    },
-
-    title: {
-        fontFamily: 'FaktCondensed,AvenirNextCondensed-Medium,Segoe UI',
-        fontWeight: 900,
-        textTransform: "uppercase",
-        marginBottom: 20
-    },
-
     input: {
-    	margin: "5px 0",
+        margin: "5px 0",
     }
 }));
