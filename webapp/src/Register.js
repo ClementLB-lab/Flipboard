@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { CardContent, Typography, TextField, Button } from "@material-ui/core";
 import AnimatedCardContainer from "./AnimatedCardContainer";
@@ -7,9 +6,7 @@ import AnimatedCardContainer from "./AnimatedCardContainer";
 export default function Register()
 {
 	const styles = useStyles();
-    const history = useHistory();
     
-    const goHome = () => history.push("/");
     const onSubmit = () => {
 
     };

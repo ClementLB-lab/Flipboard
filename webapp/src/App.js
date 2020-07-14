@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import theme from "./theme";
 import Http from "./Http";
+import Wallpaper from "./images/wallpaper.jpg";
+
 import Header from "./Header";
 import Footer from "./Footer";
 import Home from "./Home";
@@ -10,7 +12,8 @@ import Login from "./Login";
 import Publishers from "./Publishers";
 import About from "./About";
 import Register from "./Register";
-import Wallpaper from "./images/wallpaper.jpg";
+import User from "./User";
+import Settings from "./Settings";
 
 const http = new Http();
 
@@ -47,6 +50,12 @@ export default function App()
                             </Route>
                             <Route path="/about">
                                 <About />
+                            </Route>
+                            <Route path="/user">
+                                <User />
+                            </Route>
+                            <Route path="/settings">
+                                <Settings />
                             </Route>
                              <Route path="/">
                                 <Home articles={articles} />
