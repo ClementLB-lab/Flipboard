@@ -420,4 +420,33 @@ export default class UserController {
         else
             return res.status(200).json({ success: false, err: result.getError() })
     }
+
+
+    /**
+     * POST
+     *
+     * define the account in private or public.
+     *
+     * body {
+     *      token: The JWT auth token
+     *      isPrivate: private or public account
+     * }
+     *
+     * Return :
+     * 200 - data {
+     *      success: whether the account has successfully be deleted
+     *      err: Potential error message (FR)
+     * }
+     *
+     */
+    public async setAccess(req: Request, res: Response) {
+        const { token, isPrivate } = req.body;
+
+        const result = await this.userService.setAccess(token, isPrivate)
+
+        if (result.isSuccessful())
+            return res.status(200).json({ success: true });
+        else
+            return res.status(200).json({ success: false, err: result.getError() })
+    }
 }

@@ -330,4 +330,24 @@ export default class UserService {
         await this.userManager.deleteAccount(user)
         return Result.success()
     }
+
+
+    
+    /**
+     * define the account in private or public
+     *
+     * @param token The token of the user
+     * @param isPrivate private account : yes or no
+     * 
+     * @return the error message or success
+     */
+    public async setAccess(token: jwt.Token, isPrivate: boolean): Promise<Result> {
+        const user = await this.getByJWT(token)
+
+        if (!user)
+            return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+
+        await this.userManager.setAccess(user, isPrivate)
+        return Result.success()
+    }
 }

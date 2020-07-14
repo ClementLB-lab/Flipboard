@@ -78,4 +78,9 @@ export default class UserManager {
         ImageLink.destroy({ where: { ownerId: user.id } })
         await User.destroy({ where: { id: user.id } })
     }
+
+    public async setAccess(user: any, isPrivate: boolean): Promise<void> {
+        user.private = isPrivate
+        await user.save()
+    }
 }
