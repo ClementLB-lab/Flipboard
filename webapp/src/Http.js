@@ -22,4 +22,24 @@ export default class Http
             return (err);
         }
     }
+    async post(url, params)
+    {
+        const opts = {
+            method: "post",
+            mode: "cors",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        };
+        let res;
+
+        try {
+            res = await fetch(this.SERVER_URL + url, opts);
+            return (res.json());
+        }
+        catch (err) {
+            return (err);
+        }
+    }
 }
