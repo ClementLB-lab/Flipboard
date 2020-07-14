@@ -308,4 +308,22 @@ export default class UserService {
         await this.userManager.increaseNbMagazine(user, user.magazines + 1)
         return Result.success()
     }
+
+
+    /**
+     * Delete account
+     *
+     * @param token The token of the user
+     * 
+     * @return the error message or success
+     */
+    public async deleteAccount(token: jwt.Token): Promise<Result> {
+        const user = await this.getByJWT(token)
+
+        if (!user)
+            return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+
+        await this.userManager.deleteAccount(user)
+        return Result.success()
+    }
 }

@@ -346,8 +346,11 @@ export default class UserController {
 
         const follower = await this.userService.getFollowers(id)
 
+
+        if (!follower || follower.length == 0)
+            return res.status(200).json({ })
         let result;
-        if (follower != undefined) { // ici
+        if (follower) {
             const user = await this.userService.getById(follower[0].followerId)
             if (user) {
                 result = {
@@ -384,6 +387,33 @@ export default class UserController {
         const { name, description, token } = req.body;
 
         const result = await this.userService.createMagazine(name, description, token)
+
+        if (result.isSuccessful())
+            return res.status(200).json({ success: true });
+        else
+            return res.status(200).json({ success: false, err: result.getError() })
+    }
+
+    /**
+     * POST
+     *
+     * deletes the account of the logged-in user
+     *
+     * body {
+     *      token: The JWT auth token
+     * }
+     *
+     * Return :
+     * 200 - data {
+     *      success: whether the account has successfully be deleted
+     *      err: Potential error message (FR)
+     * }
+     *
+     */
+    public async deleteAccount(req: Request, res: Response) {
+        const { token } = req.body;
+
+        const result = await this.userService.deleteAccount(token)
 
         if (result.isSuccessful())
             return res.status(200).json({ success: true });

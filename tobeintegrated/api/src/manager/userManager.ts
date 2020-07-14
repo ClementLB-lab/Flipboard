@@ -2,6 +2,7 @@ import User from "../models/User";
 import Follower from "../models/Follower";
 import ImageLink from "../models/ImageLink";
 import Magazine from "../models/Magazine";
+import Favorite from "../models/Favorite";
 
 export default class UserManager {
 
@@ -66,5 +67,14 @@ export default class UserManager {
 
     public async getFollowers(userId: number): Promise<Follower[]> {
         return Follower.findAll({ where: { publisherId: userId } })
+    }
+
+    public async deleteAccount(user: any): Promise<void> {
+        Favorite.destroy({ where: { userId: user.id } })
+        Follower.destroy({ where: { publisherId: user.id } })
+        Follower.destroy({ where: { followerId: user.id } })
+        Magazine.destroy({ where: { ownerId: user.id } })
+        ImageLink.destroy({ where: { ownerId: user.id } })
+        await User.destroy({ where: { id: user.id } })
     }
 }
