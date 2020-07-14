@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, makeStyles } from "@material-ui/core";
+import Switch from "react-switch";
 
 export default function Settings()
 {
     const styles = useStyles();
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';    
-    const username = 'Test';
 
-    const onSubmit = (event) => {
-        // event.preventDefault();
-        console.log(event.currentTarget.getAttribute('username'));
+    const [username = "Test", setUsername] = useState()
+    const [email = "", setEmail] = useState()
+    const [bio = "", setBio] = useState()
+    const [toggle = false, setToggle] = useState()
+
+
+    const handleChangeUsername = e => {
+        setUsername(e.target.value)
     }
+    
+    const handleChangeEmail = e => {
+        setEmail(e.target.value)
+    }
+
+    const handleChangeBio = e => {
+        setBio(e.target.value)
+    }
+
+    const handleChangeToggle = e => {
+        setToggle(!toggle)
+    }
+    
+    const handleSubmit = event => {
+        alert(username)
+        alert(email)
+        alert(bio)
+        alert(toggle)
+//        event.preventDefault()
+    }
+
 
     return (
         <div className={styles.container}>
@@ -26,19 +52,27 @@ export default function Settings()
                 </header>
                 <hr />
                 <h1>Paramètres utilisateur</h1>
-                <form onClick={onSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className={styles.inputContainer}>
                         <p>Nom d'utilisateur</p>
-                        <input className={styles.input} type="text" id="username" name="username" />
+                        <input className={styles.input} type="text" value={username} onChange={handleChangeUsername} />
                     </div>
                     <div className={styles.inputContainer}>
                         <p>Email</p>
-                        <input className={styles.input} type="text" id="email" name="email" />
+                        <input className={styles.input} type="text" value={email} onChange={handleChangeEmail} />
                     </div>
                     <div className={styles.inputContainer}>
                         <p>Bio</p>
-                        <textarea className={styles.input} type="text" id="bio" name="bio" />
+                        <textarea className={styles.input} type="text" value={bio} onChange={handleChangeBio} />
                     </div>
+                    <label htmlFor="normal-switch">
+                        <span>Profil privée ?</span>
+                        <Switch
+                            onChange={handleChangeToggle}
+                            checked={toggle}
+                            id="normal-switch"
+                        />
+                    </label>
                     <div className={styles.inputContainer}>
                         <p>Avatar</p>
                         <input type="file" name="avatar" accept="image/x-png,image/jpeg" method="POST" />
@@ -80,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     inputContainer: {
-        marginBottom: '24px',
+        marginBottom: '24px'
     },
 
     input: {
@@ -89,5 +123,10 @@ const useStyles = makeStyles((theme) => ({
         padding: '8px 12px',
         fontSize: '16px',
         fontWeight: '500'
+    },
+
+    reactSwitch: {
+        verticalAlign: 'middle',
+        marginLeft: '4px'
     }
 }));

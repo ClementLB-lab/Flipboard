@@ -12,14 +12,25 @@ export default function User()
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
-    const username = 'TEST';
+    const username = 'TEST'
     const followers = 0;
     const magazines = 0;
+    const [title = "", setTitle] = useState()
+    const [description = "", setDescription] = useState()
 
-    const onSubmit = (event) => {
-        // event.preventDefault();
-        console.log(event.currentTarget.getAttribute('title'));
-        console.log(event.currentTarget.getAttribute('description'));
+
+    const handleChangeTitle = e => {
+        setTitle(e.target.value)
+    }
+    
+    const handleChangeDescription = e => {
+        setDescription(e.target.value)
+    }
+
+    const handleSubmit = event => {
+        alert(title)
+        alert(description)
+//        event.preventDefault()
     }
 
     return (
@@ -41,29 +52,24 @@ export default function User()
                     <Button variant="contained" color="primary" onClick={() => setModalIsOpen(true)}>
                         Créer un nouveau magazine
                     </Button>
-
-                    {/* <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="contained" color="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="contained" color="primary" onClick={handleClose}>
-                            Save Changes
-                        </Button>
-                    </Modal.Footer>
-                    </Modal> */}
                     <Modal isOpen={modalIsOpen} style={customModal}>
                         <h2>Créer un nouveau magazine</h2>
-                        <form onClick={onSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <div>
-                                <input type="text" name="title" placeholder="Titre" required/>
+                                Title:
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={handleChangeTitle}
+                                />
                             </div>
                             <div>
-                                <textarea type="text" name="description" placerholder="Description" required/>
+                                Description
+                                <textarea
+                                    type="text"
+                                    value={description}
+                                    onChange={handleChangeDescription}
+                                />
                             </div>
                             <div>
                                 <button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</button>
