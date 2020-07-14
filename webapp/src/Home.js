@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
 import AnimatedCardContainer from "./AnimatedCardContainer";
 import ArticleList from "./ArticleList";
+import Wallpaper from "./images/wallpaper.jpg";
 
 export default function Home({ articles })
 {
@@ -18,27 +19,35 @@ export default function Home({ articles })
     };
 
     return (
-        <AnimatedCardContainer>
-            <div className={styles.brandBanner}>
-                <h1 className={styles.brandBannerHeader}>
-                    <p>Be informed</p>
-                    <p>Be inspired</p>
-                    <hr className={styles.brandBannerLine}/>
-                    </h1>
-                <p>Histories selected for you.</p>
-            </div>
-            <div className={styles.buttonsContainer}>
-                <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnLogin}>Login</Button>
-                <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnRegister}>Register</Button>
-            </div>
-            <div>
-                <ArticleList articles={articles} />
-            </div>
-        </AnimatedCardContainer>
+        <div className={styles.container}>
+            <AnimatedCardContainer>
+                <div className={styles.brandBanner}>
+                    <h1 className={styles.brandBannerHeader}>
+                        <p>Be informed</p>
+                        <p>Be inspired</p>
+                        <hr className={styles.brandBannerLine}/>
+                        </h1>
+                    <p>Histories selected for you.</p>
+                </div>
+                <div className={styles.buttonsContainer}>
+                    <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnLogin}>Login</Button>
+                    <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnRegister}>Register</Button>
+                </div>
+                <div>
+                    <ArticleList articles={articles} />
+                </div>
+            </AnimatedCardContainer>
+        </div>
     );
 }
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        backgroundImage: `url(${Wallpaper})`,
+        backgroundSize: "cover",
+        minHeight: 800
+    },
+
     buttonsContainer: {
         display: "flex",
         justifyContent: "center"

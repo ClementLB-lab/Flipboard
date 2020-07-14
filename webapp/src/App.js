@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import theme from "./theme";
 import Http from "./Http";
-import Wallpaper from "./images/wallpaper.jpg";
 
 import Header from "./Header";
 import Footer from "./Footer";
@@ -69,11 +68,6 @@ export default function App()
 }
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        backgroundImage: `url(${Wallpaper})`,
-        backgroundSize: "cover",
-        minHeight: 800
-    },
     filter: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         height: 800
