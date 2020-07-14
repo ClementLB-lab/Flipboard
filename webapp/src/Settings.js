@@ -1,42 +1,49 @@
 import React from 'react';
 import { Button, makeStyles } from "@material-ui/core";
 
-import UserIcon from "@material-ui/icons/PersonOutline";
-
 export default function Settings()
 {
     const styles = useStyles();
-    const onSubmit = () => {
 
-    };
+    const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';    
+    const username = 'Test';
+
+    const onSubmit = (event) => {
+        // event.preventDefault();
+        console.log(event.currentTarget.getAttribute('username'));
+    }
 
     return (
         <div className={styles.container}>
             <main className={styles.main}>
                 <header className={styles.header}>
                     <div className={styles.userIcon}>
-                        <UserIcon className={styles.icon} />
+                        <img src={icon} alt="User Icon" className={styles.icon} />
                     </div>
                     <div>
-                        <h1>TEST</h1>
+                        <h1>{username}</h1>
                     </div>
                 </header>
                 <hr />
                 <h1>Paramètres utilisateur</h1>
-                <form autoComplete="off">
+                <form onClick={onSubmit}>
                     <div className={styles.inputContainer}>
                         <p>Nom d'utilisateur</p>
-                        <input className={styles.input} type="text" label="username" />
+                        <input className={styles.input} type="text" id="username" name="username" />
                     </div>
                     <div className={styles.inputContainer}>
                         <p>Email</p>
-                        <input className={styles.input} type="text" label="Email" />
+                        <input className={styles.input} type="text" id="email" name="email" />
                     </div>
                     <div className={styles.inputContainer}>
                         <p>Bio</p>
-                        <textarea className={styles.input} type="text" label="Bio" />
+                        <textarea className={styles.input} type="text" id="bio" name="bio" />
                     </div>
-                    <Button variant="contained" color="primary" onClick={onSubmit}>Sauvegarder</Button>
+                    <div className={styles.inputContainer}>
+                        <p>Avatar</p>
+                        <input type="file" name="avatar" accept="image/x-png,image/jpeg" method="POST" />
+                    </div>
+                    <Button variant="contained" color="primary" type="submit">Sauvegarder</Button>
                 </form>
             </main>
         </div>
@@ -68,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
 
     icon: {
         width: '80px',
-        height: '80px'
+        height: '80px',
+        borderRadius: '40px'
     },
 
     inputContainer: {
@@ -77,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 
     input: {
         width: '90vh',
-        height: '44px',
+        height: '30px',
         padding: '8px 12px',
         fontSize: '16px',
         fontWeight: '500'

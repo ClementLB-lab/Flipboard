@@ -39,4 +39,9 @@ export default class User extends S.Model<User> {
     @S.Comment("Biography")
     @S.Column(S.DataType.TEXT)
     bio: string
+
+    @S.Default(false)
+    @S.Comment("Private account ?")
+    @S.Column(S.DataType.BOOLEAN)
+    private: boolean
 }

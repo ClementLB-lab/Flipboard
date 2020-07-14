@@ -230,18 +230,22 @@ export default class UserService {
      * Update profile
      *
      * @param name The user's name
+     * @param email The user's email
      * @param bio The user's bio
      * @param token The token of the user
      * 
      * @return the error message or success
      */
-    public async editProfile(name: string, bio: string, token: jwt.Token): Promise<Result> {
+    public async editProfile(name: string, email: string, bio: string, token: jwt.Token): Promise<Result> {
         const user = await this.getByJWT(token)
 
         if (!user)
             return Result.error("Impossible de récupérer votre profil avec votre token de connexion.")
-
-        await this.userManager.updateProfile(user, name, bio)
+        if (!name || !email)
+            return Result.error("Vous devez obligatoirement avoir un nom et un email valide.")
+        if (emailUtil.validateEmail(email) == false)
+            return Result.error("L'email que vous avez transmit n'a pas un format valide.")
+        await this.userManager.updateProfile(user, name, email, bio)
         return Result.success()
     }
     
@@ -266,7 +270,7 @@ export default class UserService {
         if (!image)
             return Result.error("Un erreur s'est produite lors de l'ajout d'une nouvelle photo à votre collection.")
 
-        await this.userManager.updateProfile(user, user.name, user.bio, url)
+        await this.userManager.updateProfile(user, user.name, user.email, user.bio, url)
         return Result.success()
     }
 
@@ -324,6 +328,26 @@ export default class UserService {
             return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
 
         await this.userManager.deleteAccount(user)
+        return Result.success()
+    }
+
+
+    
+    /**
+     * define the account in private or public
+     *
+     * @param token The token of the user
+     * @param isPrivate private account : yes or no
+     * 
+     * @return the error message or success
+     */
+    public async setAccess(token: jwt.Token, isPrivate: boolean): Promise<Result> {
+        const user = await this.getByJWT(token)
+
+        if (!user)
+            return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+
+        await this.userManager.setAccess(user, isPrivate)
         return Result.success()
     }
 }

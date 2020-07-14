@@ -29,7 +29,8 @@ export default class Route {
         app.route("/user/createmagazine").post(async (req, res, next) => await this.userController.createMagazine(req, res).catch(next))
         app.route("/user/getFollowers").get(async (req, res, next) => await this.userController.getFollowers(req, res).catch(next))
         app.route("/user/deleteAccount").post(async (req, res, next) => await this.userController.deleteAccount(req, res).catch(next))
-
+        app.route("/user/setAccess").post(async (req, res, next) => await this.userController.setAccess(req, res).catch(next))
+        
 
         // Magazine's routes
         app.route("/magazine/getMagazinesByOwnerId").get(async (req, res, next) => await this.magazineController.getMagazinesByOwnerId(req, res).catch(next))
