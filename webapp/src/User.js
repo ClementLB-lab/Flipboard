@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
 import { Button } from "@material-ui/core";
+import axios from 'axios';
 
 import Modal from 'react-modal';
 
@@ -10,14 +11,31 @@ export default function User()
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3NzI1MiwiZXhwIjoxNTk0NzgwODUyfQ.oSYfTxcysbtWv0b66Y1yKwmm7Y7986f3wwUMwuvs2Pw"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
-    const username = 'TEST'
-    const followers = 0;
-    const magazines = 0;
+    const [username = "", setUsername] = useState()
+    const [followers = "", setFollowers] = useState()
+    const [magazines = "", setMagazines] = useState()
     const [title = "", setTitle] = useState()
     const [description = "", setDescription] = useState()
 
+    const getAllParams = () => {
+        axios('/user/getByJWT?token=' + authToken, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+        }).then(response => {
+            setUsername(response.data.name)
+            setFollowers(response.data.followers)
+            setMagazines(response.data.magazines)
+        })        
+    };
 
     const handleChangeTitle = e => {
         setTitle(e.target.value)
@@ -28,13 +46,14 @@ export default function User()
     }
 
     const handleSubmit = event => {
+        // fetch('http://localhost:3001/')
         alert(title)
         alert(description)
 //        event.preventDefault()
     }
 
     return (
-        <div className={styles.container}>
+        <div onLoad={getAllParams} className={styles.container}>
             <main className={styles.main}>
                 <header className={styles.header}>
                     <div className={styles.userIcon}>
