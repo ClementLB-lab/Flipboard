@@ -330,6 +330,8 @@ export default class UserController {
     /**
      * GET
      *
+     * Get all subscribers' avatars, names and IDs
+     * 
      * query {
      *      id: User id
      * }
@@ -344,21 +346,26 @@ export default class UserController {
     public async getFollowers(req: Request, res: Response) {
         const id = parseInt(req.query.id as string);
 
-        const follower = await this.userService.getFollowers(id)
+        const followers = await this.userService.getFollowers(id)
 
 
-        if (!follower || follower.length == 0)
+        if (!followers || followers.length == 0)
             return res.status(200).json({ })
-        let result;
-        if (follower) {
-            const user = await this.userService.getById(follower[0].followerId)
+        let tabIds = []
+        let tabNames = []
+        let tabUrls = []
+        for (let i = 0; i != followers.length; i++) {
+            let user = await this.userService.getById(followers[i].followerId)
             if (user) {
-                result = {
-                    followerId: follower[0].followerId,
-                    followerName: user.name,
-                    avatarUrl: user.avatarUrl
-                }
+                tabIds.push(user.id)
+                tabNames.push(user.name)
+                tabUrls.push(user.avatarUrl)
             }
+        }
+        let result = {
+            followerId: tabIds,
+            followerName: tabNames,
+            avatarUrl: tabUrls
         }
         return res.status(200).json(result)
     }
