@@ -16,6 +16,9 @@ export default class UserService {
 
     /**
      * Gets a user from a JWT
+     * 
+     * @param token The token generated with JsonWebToken
+     * 
      * @return the user or null if jwt is invalid
      */
     public async getByJWT(token: jwt.Token): Promise<User> {
@@ -26,6 +29,9 @@ export default class UserService {
 
     /**
      * Gets a user from an ID
+     * 
+     * @param id The user ID
+     * 
      * @return the user or null if no such user exists
      */
     public async getById(id: number, fields?: string): Promise<User> {
@@ -39,6 +45,9 @@ export default class UserService {
 
     /**
      * Creates a new user with these field.
+     * 
+     * @param name The name of the user
+     * @param email The email of the user
      * @param password The password in clear, it will hashed and salted
      */
     public async register(name: string, email: string, password: string): Promise<Result<jwt.Token, Object>> {
@@ -68,6 +77,7 @@ export default class UserService {
     /**
      * Verify that the email and password match, if so generates a JWT
      *
+     * @param email The email of the user
      * @param password The password in clear
      */
     public async login(email: string, password: string): Promise<Result<jwt.Token, Object>> {
@@ -84,9 +94,9 @@ export default class UserService {
     }
 
      /**
-     * Verify that the email match
+     * Verifies that the email exists in the database and then sends an email to this address.
      *
-     * @param email The email to find
+     * @param email The email to search in the database
      */
     public async forgotpwd(email: string): Promise<Result<jwt.Token, Object>> {
         if (!email)
@@ -178,7 +188,6 @@ export default class UserService {
      * 
      * @return the error message or success
      */
-
     public async profileFollow(token: jwt.Token, profileId: number): Promise<Result> {
         const user = await this.getByJWT(token)
 
@@ -227,12 +236,13 @@ export default class UserService {
     }
 
     /**
-     * Update profile
+     * Update a user's profile
      *
      * @param name The user's name
      * @param email The user's email
      * @param bio The user's bio
      * @param token The token of the user
+     * @param isPrivate Account restrictions
      * 
      * @return the error message or success
      */
@@ -250,7 +260,7 @@ export default class UserService {
     }
     
     /**
-     * Update avatar
+     * Update a user's avatar
      *
      * @param url The user's avatar url 
      * @param token The token of the user
@@ -276,6 +286,9 @@ export default class UserService {
 
     /**
      * Gets a user from an ID
+     * 
+     * @param id The user ID
+     * 
      * @return the user or null if no such user exists
      */
     public async getFollowers(id: number): Promise<Follower[]> {
@@ -292,7 +305,7 @@ export default class UserService {
      * Create a new magazine
      *
      * @param name The name
-     * @param name The description
+     * @param description Characteristics of Magazine
      * @param token The token of the user
      * 
      * @return the error message or success
@@ -304,6 +317,10 @@ export default class UserService {
             return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
         if (name == undefined)
             return Result.error("Impossible de créer un magazine qui ne porte aucun nom.")
+
+        const search = await this.userManager.createMagazine(user.id, name, description)
+        if (search)
+            return Result.error("Vous avez déjà un magazine qui s'appelle " + name)
 
         const Magazine = await this.userManager.createMagazine(user.id, name, description)
         if (!Magazine)
@@ -334,10 +351,10 @@ export default class UserService {
 
     
     /**
-     * define the account in private or public
+     * Defines whether the account will be visible to other users
      *
      * @param token The token of the user
-     * @param isPrivate private account : yes or no
+     * @param isPrivate visibility (boolean)
      * 
      * @return the error message or success
      */

@@ -84,4 +84,8 @@ export default class UserManager {
         user.private = isPrivate
         await user.save()
     }
+
+    public async getMagazine(ownerId: number, name: string): Promise<Magazine> {
+        return Magazine.findOne({ where: { ownerId: ownerId, name: name } })
+    }
 }
