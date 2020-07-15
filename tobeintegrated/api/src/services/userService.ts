@@ -318,7 +318,7 @@ export default class UserService {
         if (name == undefined)
             return Result.error("Impossible de créer un magazine qui ne porte aucun nom.")
 
-        const search = await this.userManager.createMagazine(user.id, name, description)
+        const search = await this.userManager.getMagazine(user.id, name)
         if (search)
             return Result.error("Vous avez déjà un magazine qui s'appelle " + name)
 
