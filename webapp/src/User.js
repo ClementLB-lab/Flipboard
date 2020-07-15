@@ -12,7 +12,7 @@ export default function User()
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc4NjM0OCwiZXhwIjoxNTk0Nzg5OTQ4fQ.vcKiy3z-41kyiMWRjSyXOVBHqmTMbL-4Cb38pWe2oOo"
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc5ODAyNiwiZXhwIjoxNTk0ODAxNjI2fQ.rgSpi9PyNvZ00lyRHzrhnDLmhlh1dnPBNUAwktEiEzo"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username = "", setUsername] = useState()
@@ -22,6 +22,12 @@ export default function User()
     const [title = "", setTitle] = useState()
     const [description = "", setDescription] = useState()
     const [toggle = false, setToggle] = useState()
+
+    const [followerid = [], setFollowerId] = useState()
+    const [usernamefollower = [], setUsernamefollower] = useState()
+    const [urlfollower = [], setUrlfollower] = useState()
+
+    const [data = [], setMagazinename] = useState()
 
     const getAllParams = () => {
         axios('/user/getByJWT?token=' + authToken, {
@@ -39,6 +45,40 @@ export default function User()
             setFollowers(response.data.followers)
             setMagazines(response.data.magazines)
         })        
+    };
+
+    const getFollowers = () => {
+        axios('/user/getFollowers?id=' + id, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+        }).then(response => {
+            setFollowerId(response.data.followerid)
+            setUsernamefollower(response.data.followerName)
+            setUrlfollower(response.data.avatarUrl)
+            console.log(followerid[0])
+        })
+    };
+
+    const getMagazines = () => {
+        axios('/user/getMagazinesByOwnerId?id=' + id, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+        }).then(response => {
+            setMagazinename(response.data)
+            console.log(data[3])
+        })
     };
 
     const handleChangeTitle = e => {
@@ -73,7 +113,7 @@ export default function User()
             credentials: 'same-origin',
             data: magazine
         }).then(response => {
-            if (response.data.success == true) {
+            if (response.data.success === true) {
                 alert("Votre magazine a bien été créé.");
                 setModalIsOpen(false)};
         })
@@ -98,8 +138,20 @@ export default function User()
                     <Button variant="contained" color="primary" onClick={() => setModalIsOpen(true)}>
                         Créer un nouveau magazine
                     </Button>
+
+                    <ul onLoad={getMagazines}>
+                        {data.map(item => (
+                            <li key={item.followerid}>
+                                <div>{item.followerName}</div>
+                                <div>{item.urlfollower}</div>
+                            </li>
+                        ))}
+                    </ul>
+
+
                     <Modal isOpen={modalIsOpen} style={customModal}>
                         <h2>Créer un nouveau magazine</h2>
+
                         <form onSubmit={handleSubmit}>
                             <div>
                                 Title:
@@ -136,7 +188,14 @@ export default function User()
                 </div>
                 <div>
                     <h1>Abonnés</h1>
-                    {/* <FollowersList followers={getFollowers} /> */}
+                    <ul onLoad={getFollowers}>
+                        {followerid.map(item => (
+                            <li key={item.followerid}>
+                                <div>{item.followerName}</div>
+                                <div>{item.urlfollower}</div>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </main>
         </div>
