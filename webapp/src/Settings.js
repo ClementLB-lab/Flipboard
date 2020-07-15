@@ -8,12 +8,30 @@ export default function Settings()
     const styles = useStyles();
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';    
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3NzI1MiwiZXhwIjoxNTk0NzgwODUyfQ.oSYfTxcysbtWv0b66Y1yKwmm7Y7986f3wwUMwuvs2Pw"
 
-    const [username = "Test", setUsername] = useState()
+    const [username = "", setUsername] = useState()
     const [email = "", setEmail] = useState()
     const [bio = "", setBio] = useState()
     const [toggle = false, setToggle] = useState()
 
+    const getAllParams = event => {
+        axios('/user/getByJWT?token=' + authToken, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+        }).then(response => {
+            setUsername(response.data.name)
+            setEmail(response.data.email)
+            setBio(response.data.bio)
+            setToggle(response.data.private)
+        })        
+    };
 
     const handleChangeUsername = e => {
         setUsername(e.target.value)
@@ -39,7 +57,7 @@ export default function Settings()
             name: username,
             email: email,
             bio: bio,
-            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3MzMyOSwiZXhwIjoxNTk0Nzc2OTI5fQ.hdqjhfdE8qu6yxGEz9BQnilZo7nb_D5oDYfQjPy8Apc"
+            token: authToken
         };
 
         axios(`/user/editprofile`, {
@@ -58,7 +76,7 @@ export default function Settings()
     }
 
     return (
-        <div className={styles.container}>
+        <div onLoad={getAllParams} className={styles.container}>
             <main className={styles.main}>
                 <header className={styles.header}>
                     <div className={styles.userIcon}>
