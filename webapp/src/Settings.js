@@ -7,7 +7,7 @@ export default function Settings()
 {
     const styles = useStyles();
 
-    const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';    
+    const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3NzI1MiwiZXhwIjoxNTk0NzgwODUyfQ.oSYfTxcysbtWv0b66Y1yKwmm7Y7986f3wwUMwuvs2Pw"
 
     const [username = "", setUsername] = useState()
@@ -57,6 +57,7 @@ export default function Settings()
             name: username,
             email: email,
             bio: bio,
+            isPrivate: toggle,
             token: authToken
         };
 
