@@ -43,10 +43,11 @@ export default class UserManager {
         await user.save()
     }
 
-    public async updateProfile(user: any, name: string, email: string, bio: string, avatarUrl?: string): Promise<void> {
+    public async updateProfile(user: any, name: string, email: string, bio: string, isPrivate: boolean, avatarUrl?: string): Promise<void> {
         user.name = name
         user.email = email
         user.bio = bio
+        user.private = isPrivate
         if (avatarUrl)
             user.avatarUrl = avatarUrl
 
