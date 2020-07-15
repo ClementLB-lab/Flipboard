@@ -12,12 +12,13 @@ export default function User()
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc4MTk4NiwiZXhwIjoxNTk0Nzg1NTg2fQ.jgK9FCuOaM_ygkm21v_utgWIeGBOXBHFGe6bgDup2AE"
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc4NjM0OCwiZXhwIjoxNTk0Nzg5OTQ4fQ.vcKiy3z-41kyiMWRjSyXOVBHqmTMbL-4Cb38pWe2oOo"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username = "", setUsername] = useState()
     const [followers = "", setFollowers] = useState()
     const [magazines = "", setMagazines] = useState()
+    const [id = "", setId] = useState()
     const [title = "", setTitle] = useState()
     const [description = "", setDescription] = useState()
     const [toggle = false, setToggle] = useState()
@@ -33,6 +34,7 @@ export default function User()
             withCredentials: true,
             credentials: 'same-origin',
         }).then(response => {
+            setId(response.data.id)
             setUsername(response.data.name)
             setFollowers(response.data.followers)
             setMagazines(response.data.magazines)
@@ -72,8 +74,8 @@ export default function User()
             data: magazine
         }).then(response => {
             if (response.data.success == true) {
-                alert("Votre magazine a bien été créé.")
-            }
+                alert("Votre magazine a bien été créé.");
+                setModalIsOpen(false)};
         })
     }
 
@@ -85,7 +87,7 @@ export default function User()
                         <img src={icon} alt="User Icon" className={styles.icon} />
                     </div>
                     <div>
-                        <h1>{username}</h1>
+                        <h1>{username} | {id}</h1>
                         <p>{followers} Followers | {magazines} Magazines</p>
                     </div>
                 </header>
@@ -134,6 +136,7 @@ export default function User()
                 </div>
                 <div>
                     <h1>Abonnés</h1>
+                    {/* <FollowersList followers={getFollowers} /> */}
                 </div>
             </main>
         </div>
