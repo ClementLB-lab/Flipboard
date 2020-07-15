@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import axios from 'axios';
+import Switch from "react-switch";
 
 import Modal from 'react-modal';
 
@@ -11,7 +12,7 @@ export default function User()
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3NzI1MiwiZXhwIjoxNTk0NzgwODUyfQ.oSYfTxcysbtWv0b66Y1yKwmm7Y7986f3wwUMwuvs2Pw"
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc4MTk4NiwiZXhwIjoxNTk0Nzg1NTg2fQ.jgK9FCuOaM_ygkm21v_utgWIeGBOXBHFGe6bgDup2AE"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username = "", setUsername] = useState()
@@ -19,6 +20,7 @@ export default function User()
     const [magazines = "", setMagazines] = useState()
     const [title = "", setTitle] = useState()
     const [description = "", setDescription] = useState()
+    const [toggle = false, setToggle] = useState()
 
     const getAllParams = () => {
         axios('/user/getByJWT?token=' + authToken, {
@@ -45,11 +47,34 @@ export default function User()
         setDescription(e.target.value)
     }
 
+    const handleChangeToggle = e => {
+        setToggle(!toggle)
+    }
+
     const handleSubmit = event => {
-        // fetch('http://localhost:3001/')
-        alert(title)
-        alert(description)
-//        event.preventDefault()
+        event.preventDefault();
+
+        // Token à modifier toutes les heures !
+        const magazine = {
+            name: title,
+            description: description,
+            token: authToken
+        };
+        axios('/user/createmagazine', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+            data: magazine
+        }).then(response => {
+            if (response.data.success == true) {
+                alert("Votre magazine a bien été créé.")
+            }
+        })
     }
 
     return (
@@ -77,6 +102,7 @@ export default function User()
                             <div>
                                 Title:
                                 <input
+                                    className={styles.inputName}
                                     type="text"
                                     value={title}
                                     onChange={handleChangeTitle}
@@ -85,11 +111,20 @@ export default function User()
                             <div>
                                 Description
                                 <textarea
+                                    className={styles.textarea}
                                     type="text"
                                     value={description}
                                     onChange={handleChangeDescription}
                                 />
                             </div>
+                            <label htmlFor="normal-switch">
+                                <span>Magazine privée ?</span>
+                                <Switch
+                                    onChange={handleChangeToggle}
+                                    checked={toggle}
+                                    id="normal-switch"
+                                />
+                            </label>
                             <div>
                                 <button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</button>
                                 <button>Sauvegarder</button>
@@ -145,6 +180,22 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '500'
     },
 
+    inputName: {
+        width: '55vh',
+        height: '14px',
+        padding: '8px 12px',
+        fontSize: '16px',
+        fontWeight: '500'
+    },
+
+    textarea: {
+        width: '55vh',
+        height: '54px',
+        padding: '8px 12px',
+        fontSize: '16px',
+        fontWeight: '500'
+    },
+
     magazine: {
         marginBottom: theme.spacing(20)
     }
@@ -156,7 +207,8 @@ const customModal = {
         left: '50%',
         right: 'auto',
         bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translate(-40%, -40%)',
+        maxWidth: '551px',
+        minHeight: '200px'
     }
 }
