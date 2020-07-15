@@ -10,8 +10,10 @@ export default class MagazineController {
 
     /**
      * GET
+     * 
+     * Returns all magazines published by a user
      *
-     * query {
+     * body {
      *      id: the user id
      * }
      *
@@ -21,8 +23,12 @@ export default class MagazineController {
     public async getMagazinesByOwnerId(req: Request, res: Response) {
         const { id } = req.body;
 
-        const magazine = await this.magazineService.getMagazinesByOwnerId(id)
+        const magazines = await this.magazineService.getMagazinesByOwnerId(id)
 
-        return res.status(200).json(magazine)
+        let result = []
+        for (let i = 0; i != magazines.length; i++) {
+            result.push(magazines[i].name)
+        }
+        return res.status(200).json(result)
     }
 }
