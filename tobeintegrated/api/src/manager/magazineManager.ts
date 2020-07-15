@@ -8,7 +8,7 @@ export default class MagazineManager {
     }
 
     public async addReview(userId: number, magazineId: number, review: string): Promise<Review> {
-        return Review.create({ where: { userId: userId, magazineId: magazineId, review: review } })
+        return Review.create({ userId: userId, magazineId: magazineId, review: review } )
     }
 
     public async getReviewsByMagazineId(magazineId: number): Promise<Review[]> {
