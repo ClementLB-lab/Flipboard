@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, makeStyles } from "@material-ui/core";
 import Switch from "react-switch";
+import axios from 'axios';
 
 export default function Settings()
 {
@@ -31,13 +32,30 @@ export default function Settings()
     }
     
     const handleSubmit = event => {
-        alert(username)
-        alert(email)
-        alert(bio)
-        alert(toggle)
-//        event.preventDefault()
-    }
+        event.preventDefault();
 
+        // Token à modifier toutes les heures !
+        const user = {
+            name: username,
+            email: email,
+            bio: bio,
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc3MzMyOSwiZXhwIjoxNTk0Nzc2OTI5fQ.hdqjhfdE8qu6yxGEz9BQnilZo7nb_D5oDYfQjPy8Apc"
+        };
+
+        axios(`/user/editprofile`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
+            data: user
+        }).then(response => {
+            console.log(response)
+        })
+    }
 
     return (
         <div className={styles.container}>
