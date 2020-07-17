@@ -10,13 +10,11 @@ export default class Http
     {
         const opts = {
             method: "post",
-            mode: "no-cors",
             headers: {
                 "Access-Control-Allow-Origin": "*",
-                "Accept": "application/json",
                 "Content-Type": "application/json",
             },
-            body: method === "post" ? params : undefined,
+            body: method === "post" ? JSON.stringify(params) : undefined,
             credentials: "same-origin"
         };
         let res;
@@ -26,7 +24,9 @@ export default class Http
             return (res.json());
         }
         catch (err) {
-            return ({error: err.toString()});
+            return (new Promise((res, rej) => {
+                res({error: err.toString()});
+            }));
         }
     }
     

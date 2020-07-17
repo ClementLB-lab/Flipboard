@@ -23,7 +23,7 @@ export default function FormContainer(props)
 			setOpen(true);
 			return;
 		}
-		if (!await props.onSubmit(e.target.elements)) {
+		if (!await props.onSubmit(data)) {
 			setOpen(true);
 		}
 	}

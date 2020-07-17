@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
@@ -7,6 +8,7 @@ export default function Login({ http })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
+    const history = useHistory();
     
     const filter = (data) => {
         return (true);
@@ -19,8 +21,12 @@ export default function Login({ http })
             setErrors(errors.concat(output.error));
             return (false);
         }
-        if (output.success)
+        if (output.success) {
             http.setToken(output.token);
+            history.push("/user");
+        }
+        else
+            setErrors([output.errorFields]);
         return (output.success);
     };
 

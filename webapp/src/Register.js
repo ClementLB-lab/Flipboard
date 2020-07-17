@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
@@ -8,6 +9,7 @@ export default function Register({ http })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
+    const history = useHistory();
     
     const filter = (data) => {
         let errors = [];
@@ -23,14 +25,22 @@ export default function Register({ http })
     }
 
     const onSubmit = async (data) => {
-        const output = await http.post("/user/register", data);
+        const output = await http.post("/user/register", {
+            name: data.name,
+            email: data.email,
+            password: data.password
+        });
 
         if (output.error) {
-            setErrors(errors.concat(output.error));
+            setErrors([output.error]);
             return (false);
         }
-        if (output.success)
+        if (output.success) {
             http.setToken(output.token);
+            history.push("/user");
+        }
+        else
+            setErrors([output.errorFields]);
         return (output.success);
     };
 
