@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
-import { Button } from "@material-ui/core";
+import { Button, TextField, FormControlLabel, Switch } from "@material-ui/core";
 import axios from 'axios';
-import Switch from "react-switch";
+import FormContainer from "./FormContainer";
 
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root')
-export default function User()
+export default function User({ http })
 {
     const styles = useStyles();
 
@@ -15,19 +15,17 @@ export default function User()
     const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc5ODAyNiwiZXhwIjoxNTk0ODAxNjI2fQ.rgSpi9PyNvZ00lyRHzrhnDLmhlh1dnPBNUAwktEiEzo"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
-    const [username = "", setUsername] = useState()
-    const [followers = "", setFollowers] = useState()
-    const [magazines = "", setMagazines] = useState()
-    const [id = "", setId] = useState()
-    const [title = "", setTitle] = useState()
-    const [description = "", setDescription] = useState()
-    const [toggle = false, setToggle] = useState()
+    const [username, setUsername] = useState("");
+    const [followers, setFollowers] = useState("");
+    const [magazines, setMagazines] = useState("");
+    const [id, setId] = useState("");
 
-    const [followerid = [], setFollowerId] = useState()
-    const [usernamefollower = [], setUsernamefollower] = useState()
-    const [urlfollower = [], setUrlfollower] = useState()
-
-    const [data = [], setMagazinename] = useState()
+    const [followerid, setFollowerId] = useState([]);
+    const [usernamefollower, setUsernamefollower] = useState([]);
+    const [urlfollower, setUrlfollower] = useState([]);
+    const [data, setMagazinename] = useState([]);
+    const [errors, setErrors] = useState([]);
+    const [toggle, setToggle] = useState(false);
 
     const getAllParams = () => {
         axios('/user/getByJWT?token=' + authToken, {
@@ -81,26 +79,16 @@ export default function User()
         })
     };
 
-    const handleChangeTitle = e => {
-        setTitle(e.target.value)
+    const filter = (data) =>
+    {
+        
     }
-    
-    const handleChangeDescription = e => {
-        setDescription(e.target.value)
-    }
-
-    const handleChangeToggle = e => {
-        setToggle(!toggle)
-    }
-
-    const handleSubmit = event => {
-        event.preventDefault();
-
-        // Token à modifier toutes les heures !
+    const handleSubmit = (data) =>
+    {
         const magazine = {
-            name: title,
-            description: description,
-            token: authToken
+            name: data.title,
+            description: data.description,
+            token: http.token
         };
         axios('/user/createmagazine', {
             method: 'POST',
@@ -150,40 +138,38 @@ export default function User()
 
 
                     <Modal isOpen={modalIsOpen} style={customModal}>
-                        <h2>Créer un nouveau magazine</h2>
-
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                Title:
-                                <input
-                                    className={styles.inputName}
-                                    type="text"
-                                    value={title}
-                                    onChange={handleChangeTitle}
-                                />
-                            </div>
+                        <FormContainer
+                            title="Create a new magazine" 
+                            onSubmit={handleSubmit}
+                        >
+                            <TextField
+                                label="Title"
+                                name="title"
+                                variant="filled"
+                                minLength={3}
+                                className={styles.input}
+                                fullWidth
+                                required
+                            />
                             <div>
                                 Description
                                 <textarea
+                                    name="description"
                                     className={styles.textarea}
                                     type="text"
-                                    value={description}
-                                    onChange={handleChangeDescription}
                                 />
                             </div>
-                            <label htmlFor="normal-switch">
-                                <span>Magazine privée ?</span>
-                                <Switch
-                                    onChange={handleChangeToggle}
-                                    checked={toggle}
-                                    id="normal-switch"
-                                />
-                            </label>
+                            <FormControlLabel
+                                label="Magazine privé"
+                                control={
+                                    <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} name="private" />
+                                }
+                            />
                             <div>
-                                <button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</button>
-                                <button>Sauvegarder</button>
+                                <Button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</Button>
+                                <Button>Sauvegarder</Button>
                             </div>
-                        </form>
+                        </FormContainer>
                     </Modal>
                 </div>
                 <div>
@@ -230,24 +216,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '40px'
     },
 
-    inputContainer: {
-        marginBottom: '24px',
-    },
-
-    input: {
-        width: '90vh',
-        height: '44px',
-        padding: '8px 12px',
-        fontSize: '16px',
-        fontWeight: '500'
-    },
-
     inputName: {
-        width: '55vh',
-        height: '14px',
-        padding: '8px 12px',
-        fontSize: '16px',
-        fontWeight: '500'
+        margin: "5px 0"
     },
 
     textarea: {

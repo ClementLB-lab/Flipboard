@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, makeStyles } from "@material-ui/core";
-import Switch from "react-switch";
+import { Button, Switch, FormControlLabel, TextField, TextareaAutosize, makeStyles } from "@material-ui/core";
 import axios from 'axios';
 
 export default function Settings()
@@ -44,10 +43,6 @@ export default function Settings()
     const handleChangeBio = e => {
         setBio(e.target.value)
     }
-
-    const handleChangeToggle = e => {
-        setToggle(!toggle)
-    }
     
     const handleSubmit = event => {
         event.preventDefault();
@@ -88,32 +83,49 @@ export default function Settings()
                     </div>
                 </header>
                 <hr />
-                <h1>Paramètres utilisateur</h1>
+                <h1>User settings</h1>
                 <form onSubmit={handleSubmit}>
-                    <div className={styles.inputContainer}>
-                        <p>Nom d'utilisateur</p>
-                        <input className={styles.input} type="text" value={username} onChange={handleChangeUsername} />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p>Email</p>
-                        <input className={styles.input} type="text" value={email} onChange={handleChangeEmail} />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p>Bio</p>
-                        <textarea className={styles.input} type="text" value={bio} onChange={handleChangeBio} />
-                    </div>
-                    <label htmlFor="normal-switch">
-                        <span>Profil privée ?</span>
-                        <Switch
-                            onChange={handleChangeToggle}
-                            checked={toggle}
-                            id="normal-switch"
-                        />
-                    </label>
-                    <div className={styles.inputContainer}>
-                        <p>Avatar</p>
-                        <input type="file" name="avatar" accept="image/x-png,image/jpeg" method="POST" />
-                    </div>
+                    <TextField
+                        label="Username"
+                        name="username"
+                        variant="filled"
+                        value={username}
+                        minLength={3}
+                        className={styles.input}
+                        fullWidth
+                        required
+                    />
+                    <TextField
+                        type="email"
+                        label="Email"
+                        name="email"
+                        variant="filled"
+                        value={email}
+                        className={styles.input}
+                        fullWidth
+                        required
+                    />
+                    <TextareaAutosize
+                        rowsMax={4}
+                        placeholder="Biography"
+                        name="bio"
+                        value={bio}
+                        className={styles.input}
+                    />
+                    <FormControlLabel
+                        label="Profil privé"
+                        control={
+                            <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} name="private" />
+                        }
+                    />
+                    <TextField
+                        type="file"
+                        label="Avatar"
+                        name="avatar"
+                        accept="image/x-png,image/jpeg"
+                        method="POST"
+                        className={styles.input}
+                    />
                     <Button variant="contained" color="primary" type="submit">Sauvegarder</Button>
                 </form>
             </main>
@@ -150,16 +162,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '40px'
     },
 
-    inputContainer: {
-        marginBottom: '24px'
-    },
-
     input: {
-        width: '90vh',
-        height: '30px',
-        padding: '8px 12px',
-        fontSize: '16px',
-        fontWeight: '500'
+        margin: "5px 0"
     },
 
     reactSwitch: {

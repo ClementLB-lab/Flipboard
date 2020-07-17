@@ -10,7 +10,7 @@ export default function FormContainer(props)
 	const [open, setOpen] = React.useState(false);
 	const styles = useStyles();
 
-	const submit = (e) => 
+	const submit = async (e) => 
 	{
 		const data = {};
 		const elements = e.target.elements;
@@ -23,7 +23,9 @@ export default function FormContainer(props)
 			setOpen(true);
 			return;
 		}
-		props.onSubmit(e.target.elements);
+		if (!await props.onSubmit(e.target.elements)) {
+			setOpen(true);
+		}
 	}
 	return (
 		<div className={styles.container}>

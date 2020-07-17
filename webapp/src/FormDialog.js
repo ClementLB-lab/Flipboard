@@ -12,8 +12,8 @@ export default function FormDialog({errors, open, onClick})
 		<Dialog open={open}>
             <DialogTitle>Error</DialogTitle>
             <DialogContent>
-				{errors.map((e) => {
-				    return <DialogContentText>{e}</DialogContentText>
+				{errors.map((e, i) => {
+				    return <DialogContentText key={i}>{e}</DialogContentText>
                 })}
                 <Button onClick={onClick}>OK</Button>
         	</DialogContent>

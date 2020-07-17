@@ -4,9 +4,7 @@ import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 import Http from "./Http";
 
-const http = new Http();
-
-export default function Register()
+export default function Register({ http })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
@@ -25,7 +23,15 @@ export default function Register()
     }
 
     const onSubmit = async (data) => {
-        //Todo
+        const output = await http.post("/user/register", data);
+
+        if (output.error) {
+            setErrors(errors.concat(output.error));
+            return (false);
+        }
+        if (output.success)
+            http.setToken(output.token);
+        return (output.success);
     };
 
     return (

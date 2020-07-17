@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import theme from "./theme";
 import Http from "./Http";
-
 import Header from "./Header";
 import Footer from "./Footer";
 import Home from "./Home";
@@ -14,7 +13,7 @@ import Register from "./Register";
 import User from "./User";
 import Settings from "./Settings";
 
-const http = new Http();
+const http = new Http("http://localhost:3001");
 
 export default function App()
 {
@@ -39,10 +38,10 @@ export default function App()
                     <div className={styles.filter}>
                         <Switch>
                             <Route path="/register">
-                                <Register />
+                                <Register http={http} />
                             </Route>
                             <Route path="/login">
-                                <Login />
+                                <Login http={http} />
                             </Route>
                             <Route path="/publishers">
                                 <Publishers />
@@ -51,7 +50,7 @@ export default function App()
                                 <About />
                             </Route>
                             <Route path="/user">
-                                <User />
+                                <User http={http} />
                             </Route>
                             <Route path="/settings">
                                 <Settings />

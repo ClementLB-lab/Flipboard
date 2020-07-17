@@ -3,24 +3,25 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
-export default function Login()
+export default function Login({ http })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
     
     const filter = (data) => {
-        let errors = [];
-
-        if (data.password.length < 6) errors.push("Password is too short.");
-        if (errors.length > 0) {
-            setErrors(errors);
-            return (false);
-        }
         return (true);
     }
 
     const onSubmit = async (data) => {
-        // Todo
+        const output = await http.post("/user/login", data);
+
+        if (output.error) {
+            setErrors(errors.concat(output.error));
+            return (false);
+        }
+        if (output.success)
+            http.setToken(output.token);
+        return (output.success);
     };
 
     return (
