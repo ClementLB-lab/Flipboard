@@ -12,13 +12,14 @@ export default function User({ http })
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NDc5ODAyNiwiZXhwIjoxNTk0ODAxNjI2fQ.rgSpi9PyNvZ00lyRHzrhnDLmhlh1dnPBNUAwktEiEzo"
+    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NTA2MDQ5NSwiZXhwIjoxNTk1MDY0MDk1fQ.VO2GvOUD2iuSYRRNB44c7NrBuA20gP_nCI2DMieTJRg"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username, setUsername] = useState("");
     const [followers, setFollowers] = useState("");
     const [magazines, setMagazines] = useState("");
     const [id, setId] = useState("");
+    const [bio, setBio] = useState("");
 
     const [followerid, setFollowerId] = useState([]);
     const [usernamefollower, setUsernamefollower] = useState([]);
@@ -40,6 +41,7 @@ export default function User({ http })
         }).then(response => {
             setId(response.data.id)
             setUsername(response.data.name)
+            setBio(response.data.bio)
             setFollowers(response.data.followers)
             setMagazines(response.data.magazines)
         })        
@@ -115,11 +117,14 @@ export default function User({ http })
                         <img src={icon} alt="User Icon" className={styles.icon} />
                     </div>
                     <div>
-                        <h1>{username} | {id}</h1>
-                        <p>{followers} Followers | {magazines} Magazines</p>
+                        <h1>{username}</h1>
+                        <p className={styles.bio}>{bio}</p>
                     </div>
                 </header>
-                <hr />
+                <div>
+                    <p className={styles.text}>{followers} Followers | {magazines} Magazines</p>
+                    <hr />
+                </div>
                 <div className={styles.magazine}>
                     <h1>Magazines</h1>
 
@@ -192,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: '1142px',
         margin: '0 auto',
-        paddingTop: '20px'
+        paddingTop: '10px'
     },
 
     main: {
@@ -213,7 +218,8 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         width: '80px',
         height: '80px',
-        borderRadius: '40px'
+        borderRadius: '40px',
+        marginTop: '16px'
     },
 
     inputName: {
@@ -230,6 +236,14 @@ const useStyles = makeStyles((theme) => ({
 
     magazine: {
         marginBottom: theme.spacing(20)
+    },
+
+    bio: {
+        marginTop: '-10px'
+    },
+
+    text: {
+        marginLeft: '96px'
     }
 }));
 

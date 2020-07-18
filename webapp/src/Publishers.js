@@ -14,7 +14,7 @@ export default function Publishers()
                 <div>
                     <h1>
                         <p className={styles.brandBannerHeader}>
-                            Rejoinez Flipboard
+                            Rejoignez Flipboard
                         </p>
                         <hr className={styles.brandBannerLine} />
                     </h1>
