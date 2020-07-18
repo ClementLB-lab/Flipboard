@@ -36,6 +36,7 @@ export default function Login({ http })
             errors={errors}
             filter={filter}
             onSubmit={onSubmit}
+            fullscreen
         >
             <TextField 
                 type="email"

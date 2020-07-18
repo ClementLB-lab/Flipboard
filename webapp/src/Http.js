@@ -3,13 +3,13 @@ export default class Http
     constructor(url)
     {
         this.baseUrl = url;
-        this.token = undefined;
+        this.token = sessionStorage.getItem("token");
     }
 
-    async req(method, url, params)
+    async req(method, url, params = undefined)
     {
         const opts = {
-            method: "post",
+            method: method,
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export default class Http
     
     async get(url)
     {
-        return (await this.req("get", url, {}))
+        return (await this.req("get", url));
     }
     async post(url, params)
     {
@@ -40,6 +40,7 @@ export default class Http
     }
     setToken(token)
     {
+        sessionStorage.setItem("token", token);
         this.token = token;
     }
     get isConnected()

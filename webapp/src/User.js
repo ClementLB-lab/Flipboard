@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField, FormControlLabel, Switch } from "@material-ui/core";
-import axios from 'axios';
+import { Button, TextField, FormControlLabel, Switch, Modal } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
-import Modal from 'react-modal';
-
-Modal.setAppElement('#root')
 export default function User({ http })
 {
     const styles = useStyles();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU5NTA2MDQ5NSwiZXhwIjoxNTk1MDY0MDk1fQ.VO2GvOUD2iuSYRRNB44c7NrBuA20gP_nCI2DMieTJRg"
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username, setUsername] = useState("");
@@ -28,85 +23,53 @@ export default function User({ http })
     const [errors, setErrors] = useState([]);
     const [toggle, setToggle] = useState(false);
 
-    const getAllParams = () => {
-        axios('/user/getByJWT?token=' + authToken, {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-            credentials: 'same-origin',
-        }).then(response => {
-            setId(response.data.id)
-            setUsername(response.data.name)
-            setBio(response.data.bio)
-            setFollowers(response.data.followers)
-            setMagazines(response.data.magazines)
-        })        
+    const getAllParams = async () => {
+        let output;
+
+        if (!http.token) {
+            return;
+        }
+        output = await http.get(`/user/getByJWT?token=${http.token}`);
+        setId(output.id);
+        setUsername(output.name);
+        setBio(output.bio);
+        setFollowers(output.followers);
+        setMagazines(output.magazines);
     };
 
-    const getFollowers = () => {
-        axios('/user/getFollowers?id=' + id, {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-            credentials: 'same-origin',
-        }).then(response => {
-            setFollowerId(response.data.followerid)
-            setUsernamefollower(response.data.followerName)
-            setUrlfollower(response.data.avatarUrl)
-            console.log(followerid[0])
-        })
+    const getFollowers = async () => {
+        const output = await http.get(`/user/getFollowers?id=${id}`);
+        
+        setFollowerId(output.followerid);
+        setUsernamefollower(output.followerName);
+        setUrlfollower(output.avatarUrl);
+        console.log(followerid[0])
     };
 
-    const getMagazines = () => {
-        axios('/user/getMagazinesByOwnerId?id=' + id, {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-            credentials: 'same-origin',
-        }).then(response => {
-            setMagazinename(response.data)
-            console.log(data[3])
-        })
+    const getMagazines = async () => {
+        const output = await http.get(`/user/getMagazinesByOwnerId?id=${id}`);
+        
+        setMagazinename(output);
+        console.log(output);
     };
 
     const filter = (data) =>
     {
         
     }
-    const handleSubmit = (data) =>
+    const handleSubmit = async (data) =>
     {
         const magazine = {
             name: data.title,
             description: data.description,
             token: http.token
         };
-        axios('/user/createmagazine', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-            credentials: 'same-origin',
-            data: magazine
-        }).then(response => {
-            if (response.data.success === true) {
-                alert("Votre magazine a bien été créé.");
-                setModalIsOpen(false)};
-        })
+        const output = await http.post(`/user/createmagazine`, magazine);
+        
+        if (output.success) {
+            alert("Votre magazine a bien été créé.");
+            setModalIsOpen(false);
+        }
     }
 
     return (
@@ -142,10 +105,15 @@ export default function User({ http })
                     </ul>
 
 
-                    <Modal isOpen={modalIsOpen} style={customModal}>
+                    <Modal 
+                        open={modalIsOpen}
+                        className={styles.customModal}
+                        onClose={() => setModalIsOpen(false)}
+                    >
                         <FormContainer
                             title="Create a new magazine" 
                             onSubmit={handleSubmit}
+                            errors={[]}
                         >
                             <TextField
                                 label="Title"
@@ -156,14 +124,17 @@ export default function User({ http })
                                 fullWidth
                                 required
                             />
-                            <div>
-                                Description
-                                <textarea
-                                    name="description"
-                                    className={styles.textarea}
-                                    type="text"
-                                />
-                            </div>
+                            <TextField
+                                label="Description"
+                                name="description"
+                                variant="filled"
+                                minLength={10}
+                                className={styles.input}
+                                fullWidth
+                                required
+                                multiline
+                                rows={4}
+                            />
                             <FormControlLabel
                                 label="Magazine privé"
                                 control={
@@ -222,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '16px'
     },
 
-    inputName: {
+    input: {
         margin: "5px 0"
     },
 
@@ -244,17 +215,10 @@ const useStyles = makeStyles((theme) => ({
 
     text: {
         marginLeft: '96px'
+    },
+    customModal: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 }));
-
-const customModal = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        transform: 'translate(-40%, -40%)',
-        maxWidth: '551px',
-        minHeight: '200px'
-    }
-}

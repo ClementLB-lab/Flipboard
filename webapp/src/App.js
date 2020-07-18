@@ -33,7 +33,7 @@ export default function App()
     }
     return (
             <ThemeProvider theme={theme}>
-                <Header onSearch={getArticles} />
+                <Header onSearch={getArticles} http={http} />
                 <div className={styles.container}>
                     <div className={styles.filter}>
                         <Switch>
@@ -53,7 +53,7 @@ export default function App()
                                 <User http={http} />
                             </Route>
                             <Route path="/settings">
-                                <Settings />
+                                <Settings http={http} />
                             </Route>
                              <Route path="/">
                                 <Home articles={articles} />

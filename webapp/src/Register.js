@@ -45,11 +45,12 @@ export default function Register({ http })
     };
 
     return (
-        <FormContainer 
+        <FormContainer
             title="Join the club of informed people!" 
             errors={errors} 
             filter={filter}
             onSubmit={onSubmit}
+            fullscreen
         >
             <TextField
                 label="Name"

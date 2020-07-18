@@ -27,21 +27,44 @@ export default function FormContainer(props)
 			setOpen(true);
 		}
 	}
-	return (
-		<div className={styles.container}>
-			<FormDialog open={open} errors={props.errors} onClick={() => setOpen(false)}/>
-			<AnimatedCardContainer>
-				<CardContent>
-					<Typography variant="h4" component="h2" className={styles.title}>
-        				{props.title}
-        			</Typography>
-            		<form autoComplete="off" onSubmit={submit} >
-        				{props.children}
-        			</form>
-				</CardContent>
-			</AnimatedCardContainer>
-		</div>
-	);
+	const displayFullscreenContainer = () =>
+	{
+		return (
+			<div className={styles.container}>
+				<FormDialog open={open} errors={props.errors} onClick={() => setOpen(false)}/>
+				<AnimatedCardContainer>
+					<CardContent>
+						<Typography variant="h4" component="h2" className={styles.title}>
+							{props.title}
+	        			</Typography>
+	            		<form autoComplete="off" onSubmit={submit} >
+	        				{props.children}
+	        			</form>
+					</CardContent>
+				</AnimatedCardContainer>
+			</div>
+		);
+	}
+	const displayNotFullscreenContainer = () =>
+	{
+		return (
+			<div>
+				<FormDialog open={open} errors={props.errors} onClick={() => setOpen(false)}/>
+				<AnimatedCardContainer>
+					<CardContent>
+						<Typography variant="h4" component="h2" className={styles.title}>
+		        			{props.title}
+		        		</Typography>
+		            	<form autoComplete="off" onSubmit={submit} >
+		        			{props.children}
+		        		</form>
+					</CardContent>
+				</AnimatedCardContainer>
+			</div>
+		)
+	}
+
+	return (props.fullscreen ? displayFullscreenContainer() : displayNotFullscreenContainer());
 }
 
 const useStyles = makeStyles((theme) => ({
