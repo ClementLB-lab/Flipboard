@@ -37,14 +37,14 @@ export default class MagazineController {
      * Returns all magazines published by a user
      *
      * body {
-     *      userId: the user ID
+     *      id: the user ID
      * }
      *
      * return:
      * 200 - data : Magazine[]
      */
     public async getMagazinesByOwnerId(req: Request, res: Response) {
-        const { userId } = req.body;
+        const userId = parseInt(req.query.id as string);
 
         const magazines = await this.magazineService.getMagazinesByOwnerId(userId)
 
