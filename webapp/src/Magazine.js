@@ -18,6 +18,7 @@ export default function Magazine({ http })
     const [followers, setFollowers] = useState("");
     const [id, setId] = useState("");
     const [description, setDescription] = useState("");
+    const [review, setReview] = useState("");
 
 
     const [followerid, setFollowerId] = useState([]);
@@ -45,6 +46,22 @@ export default function Magazine({ http })
         setMagazinename(output.name);
         setDescription(output.description);
 //        setFollowers(output.followers);
+    };
+
+    const handleTextFieldChange = (e) => {
+        setReview(e.target.value)
+    };
+
+    const addReview = async () => {
+        console.log("L'ID du mag : " + id)
+        console.log("Commentaire : " + review)
+        console.log("Token du user : " + http.token)
+        const output = await http.post("/magazine/addReview", {
+            magazineId: id,
+            review: review,
+            token: http.token
+        });
+
     };
 
     const getReviews = async () => {
@@ -123,9 +140,13 @@ export default function Magazine({ http })
                                 rows={4}
                                 defaultValue=""
                                 fullWidth
+                                onChange={handleTextFieldChange}
                                 />
                             </div>
                         </form>
+                        <div className={styles.buttonsContainer}>
+                            <Button className={styles.button} variant="contained" color="secondary" onClick={addReview}>Post Comment</Button>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -177,11 +198,16 @@ const useStyles = makeStyles((theme) => ({
     text: {
         marginLeft: '96px'
     },
-    customModal: {
+
+    buttonsContainer: {
         display: "flex",
-        alignItems: "center",
         justifyContent: "center"
     },
+
+    button: {
+        margin: theme.spacing(1)
+    },
+
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
