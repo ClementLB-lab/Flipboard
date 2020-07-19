@@ -73,6 +73,6 @@ export default function App()
 const useStyles = makeStyles((theme) => ({
     filter: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        height: 800
+        minHeight: 800
     }
 }));

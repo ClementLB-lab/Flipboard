@@ -5,9 +5,6 @@ var style = {
     borderTop: "1px solid #212121",
     textAlign: "center",
     padding: "20px",
-    position: "fixed",
-    left: "0",
-    bottom: "0",
     height: "6vh",
     width: "100%",
 }
