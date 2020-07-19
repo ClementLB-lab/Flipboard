@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField, FormControlLabel, Switch, Modal } from "@material-ui/core";
+import { Button, TextField, FormControlLabel, Switch, Modal, Tooltip } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
 export default function User({ http })
@@ -16,9 +16,10 @@ export default function User({ http })
     const [id, setId] = useState("");
     const [bio, setBio] = useState("");
 
-    const [followerid, setFollowerId] = useState([]);
-    const [usernamefollower, setUsernamefollower] = useState([]);
-    const [urlfollower, setUrlfollower] = useState([]);
+    const [followerUsername, setFollowerUsername] = useState([]);
+    const [followerInfos, setFollowerInfos] = useState({});
+    const [followerAvatar, setFollowerAvatar] = useState([]);
+
     const [data, setMagazinename] = useState([]);
     const [errors, setErrors] = useState([]);
     const [toggle, setToggle] = useState(false);
@@ -30,20 +31,19 @@ export default function User({ http })
             return;
         }
         output = await http.get(`/user/getByJWT?token=${http.token}`);
+        let _id = output.id;
         setId(output.id);
         setUsername(output.name);
         setBio(output.bio);
         setFollowers(output.followers);
         setMagazines(output.magazines);
-    };
 
-    const getFollowers = async () => {
-        const output = await http.get(`/user/getFollowers?id=${id}`);
-        
-        setFollowerId(output.followerid);
-        setUsernamefollower(output.followerName);
-        setUrlfollower(output.avatarUrl);
-        console.log(followerid[0])
+        const response = await http.get(`/user/getFollowers?id=${_id}`);
+
+        console.log(response);
+        setFollowerUsername(response.followerName);
+        setFollowerInfos(response);
+        setFollowerAvatar(response.avatarUrl);
     };
 
     const getMagazines = async () => {
@@ -71,6 +71,13 @@ export default function User({ http })
             setModalIsOpen(false);
         }
     }
+
+    console.log(followerInfos)
+    // const test = followerUsername.map(follower => {
+    //     return (
+    //         <p>{follower}</p>
+    //     )
+    // })
 
     return (
         <div onLoad={getAllParams} className={styles.container}>
@@ -150,14 +157,9 @@ export default function User({ http })
                 </div>
                 <div>
                     <h1>Abonnés</h1>
-                    <ul onLoad={getFollowers}>
-                        {followerid.map(item => (
-                            <li key={item.followerid}>
-                                <div>{item.followerName}</div>
-                                <div>{item.urlfollower}</div>
-                            </li>
-                        ))}
-                    </ul>
+                    <div>
+                        {/* {test} */}
+                    </div>
                 </div>
             </main>
         </div>

@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
-import Http from "./Http";
 
 export default function Register({ http })
 {
