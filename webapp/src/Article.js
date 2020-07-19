@@ -1,12 +1,21 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
+import { Card, CardMedia, CardContent, Typography, Button, Tooltip } from '@material-ui/core';
 
-export default function Article({title, date, author, description, body, image})
+import AddIcon from '@material-ui/icons/Add';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+
+export default function Article({id, title, date, author, description, body, image})
 {
     const styles = useStyles();
     
-     return (
+    const onClickAddArticle = () => {
+    }
+
+    const onClickLikeArticle = () => {
+    }
+
+    return (
         <Card className={styles.root}>
             <CardMedia
                 component="img"
@@ -30,6 +39,19 @@ export default function Article({title, date, author, description, body, image})
                     {body.replace("<br />", "\n")}
                 </Typography>
             </CardContent>
+
+            <Tooltip title="Like">
+                <Button variant="contained" color="primary">
+                    <FavoriteBorderIcon />
+                </Button>
+            </Tooltip>
+
+            <Tooltip title="Add this article">
+                <Button variant="contained" color="primary">
+                    <AddIcon />
+                </Button>
+            </Tooltip>
+
         </Card>
     );
 }

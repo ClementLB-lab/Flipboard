@@ -10,6 +10,7 @@ export default class ArticleList extends React.Component
                 return (
                     <div key={article.id}>
                         <Article
+                            id={article.id}
                             title={article.title}
                             description={article.description}
                             body={article.body}
