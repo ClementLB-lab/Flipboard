@@ -17,11 +17,9 @@ export default function User({ http })
     const [bio, setBio] = useState("");
 
     const [followerUsername, setFollowerUsername] = useState([]);
-    const [followerInfos, setFollowerInfos] = useState({});
     const [followerAvatar, setFollowerAvatar] = useState([]);
 
-    const [data, setMagazinename] = useState([]);
-    const [errors, setErrors] = useState([]);
+    const [magazineName, setMagazineName] = useState([]);
     const [toggle, setToggle] = useState(false);
 
     const getAllParams = async () => {
@@ -38,23 +36,20 @@ export default function User({ http })
         setFollowers(output.followers);
         setMagazines(output.magazines);
 
-        const response = await http.get(`/user/getFollowers?id=${_id}`);
+        const responseFollower = await http.get(`/user/getFollowers?id=${_id}`);
 
-        setFollowerUsername(response.followerName);
-        setFollowerInfos(response);
-        setFollowerAvatar(response.avatarUrl);
+        if (responseFollower.followerName !== undefined) {
+            setFollowerUsername(responseFollower.followerName);
+            setFollowerAvatar(responseFollower.avatarUrl);
+        }
+
+        const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${id}`);
+
+        if (responseMagazine !== undefined) {
+            setMagazineName(responseMagazine);
+        }
     };
 
-    const getMagazines = async () => {
-        const output = await http.get(`/user/getMagazinesByOwnerId?id=${id}`);
-        setMagazinename(output);
-
-    };
-
-    const filter = (data) =>
-    {
-        
-    }
     const handleSubmit = async (data) =>
     {
         const magazine = {
@@ -69,13 +64,6 @@ export default function User({ http })
             setModalIsOpen(false);
         }
     }
-
-//    console.log(followerInfos)
-    // const test = followerUsername.map(follower => {
-    //     return (
-    //         <p>{follower}</p>
-    //     )
-    // })
 
     return (
         <div onLoad={getAllParams} className={styles.container}>
@@ -96,19 +84,25 @@ export default function User({ http })
                 <div className={styles.magazine}>
                     <h1>Magazines</h1>
 
-                    <Button variant="contained" color="primary" onClick={() => setModalIsOpen(true)}>
+                    <Button className={styles.addMagazineButton} variant="contained" color="primary" onClick={() => setModalIsOpen(true)}>
                         Créer un nouveau magazine
                     </Button>
 
-                    <ul onLoad={getMagazines}>
-                        {data.map(item => (
-                            <li key={item.followerid}>
-                                <div>{item.followerName}</div>
-                                <div>{item.urlfollower}</div>
-                            </li>
-                        ))}
-                    </ul>
-
+                    <div className={styles.root}>
+                        <GridList className={styles.gridList} cols={2}>
+                            {magazineName.map((name, index) => (
+                                <GridListTile>
+                                    <div className={styles.rectangle}></div>
+                                    <GridListTileBar
+                                        title={name}
+                                        classes={{
+                                            root: styles.titleBar
+                                        }}
+                                    />
+                                </GridListTile>
+                            ))}
+                        </GridList>
+                    </div>
 
                     <Modal 
                         open={modalIsOpen}
@@ -156,9 +150,9 @@ export default function User({ http })
                 <div>
                     <h1>Abonnés</h1>
                     <div className={styles.root}>
-                        <GridList className={styles.gridList} cols={2.5}>
+                        <GridList className={styles.gridList} cols={5}>
                             {followerUsername.map((name, index) => (
-                                <GridListTile>
+                                <GridListTile key={followerAvatar[index]}>
                                     <img src={followerAvatar[index]} alt="Follower Icon" />
                                     <GridListTileBar
                                         title={name}
@@ -218,7 +212,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     magazine: {
-        marginBottom: theme.spacing(20)
+        marginBottom: theme.spacing(5)
+    },
+
+    addMagazineButton: {
+        marginBottom: '20px'
     },
 
     bio: {
@@ -249,5 +247,11 @@ const useStyles = makeStyles((theme) => ({
 
     titleBar: {
         background: 'linear-gradient(to tap, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0) 100%)'
+    },
+
+    rectangle: {
+        width: '180vh',
+        height: '180vh',
+        background: 'red'
     }
 }));
