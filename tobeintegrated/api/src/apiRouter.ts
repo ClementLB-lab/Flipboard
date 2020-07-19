@@ -33,6 +33,7 @@ export default class Route {
         
 
         // Magazine's routes
+        app.route("/magazine/getMagazineById").get(async (req, res, next) => await this.magazineController.getMagazineById(req, res).catch(next))
         app.route("/magazine/getMagazinesByOwnerId").get(async (req, res, next) => await this.magazineController.getMagazinesByOwnerId(req, res).catch(next))
         app.route("/magazine/addReview").post(async (req, res, next) => await this.magazineController.addReview(req, res).catch(next))
         app.route("/magazine/getReviewsByMagazineId").get(async (req, res, next) => await this.magazineController.getReviewsByMagazineId(req, res).catch(next))

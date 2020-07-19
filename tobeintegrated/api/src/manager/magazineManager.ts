@@ -3,6 +3,10 @@ import Review from "../models/Review";
 
 export default class MagazineManager {
 
+    public async getMagazineById(magazineId: number): Promise<Magazine> {
+        return Magazine.findOne({ where: { id: magazineId } })
+    }
+
     public async getMagazinesByOwnerId(ownerId: number): Promise<Magazine[]> {
         return Magazine.findAll({ where: { ownerId: ownerId } })
     }

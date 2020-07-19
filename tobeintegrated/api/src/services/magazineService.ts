@@ -10,6 +10,21 @@ export default class MagazineService {
     private magazineManager = new MagazineManager()
     private userService = new UserService();
 
+    /**
+     * Gets magazine by its ID
+     * 
+     * @param magazineId The magazine ID
+     * 
+     * @return the magazine or null if no match magazineID
+     */
+    public async getMagazineById(magazineId: number): Promise<Magazine> {
+        if (!magazineId)
+            return null
+
+        const magazine = await this.magazineManager.getMagazineById(magazineId);
+        return magazine;
+    }
+
 
     /**
      * Gets magazines by owner ID
