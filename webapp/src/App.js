@@ -12,6 +12,7 @@ import About from "./About";
 import Register from "./Register";
 import User from "./User";
 import Settings from "./Settings";
+import Magazine from "./Magazine";
 
 const http = new Http("http://localhost:3001");
 
@@ -54,6 +55,9 @@ export default function App()
                             </Route>
                             <Route path="/settings">
                                 <Settings http={http} />
+                            </Route>
+                            <Route path="/magazine">
+                                <Magazine http={http} />
                             </Route>
                              <Route path="/">
                                 <Home articles={articles} />
