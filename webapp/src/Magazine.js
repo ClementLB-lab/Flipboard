@@ -4,6 +4,7 @@ import { Button, TextField, FormControlLabel, Switch, Modal } from "@material-ui
 import FormContainer from "./FormContainer";
 import ReactDOM from "react-dom";
 import Comment from './Comment'
+import {browserHistory} from "react-router";
 
 import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
 
@@ -36,15 +37,20 @@ export default function Magazine({ http })
         const magazineId = getParameterByName('id');
         let output;
 
-        if (!http.token) {
+        if (!http.token || !magazineId) {
+            window.location.href = "http://localhost:3000/";
             return;
         }
         output = await http.get(`/magazine/getMagazineById?id=${magazineId}`);
-        setId(output.id);
-        setMagazinename(output.name);
-        setDescription(output.description);
-//        setFollowers(output.followers);
-        await getReviews();
+        if (output == undefined) {
+            window.location.href = "http://localhost:3000/";
+        } else {
+            setId(output.id);
+            setMagazinename(output.name);
+            setDescription(output.description);
+    //        setFollowers(output.followers);
+            getReviews(magazineId);
+        }
     };
 
     const handleTextFieldChange = (e) => {
@@ -59,21 +65,15 @@ export default function Magazine({ http })
         });
     };
 
-    const getReviews = async () => {
-        let output = await http.get(`/magazine/getReviewsByMagazineId?id=1`);
+    const getReviews = async (magId) => {
+        let output = await http.get(`/magazine/getReviewsByMagazineId?id=${magId}`);
         
-        setReviewIds(output.userId)
-        setReviewUsernames(output.name)
-        setReviewComments(output.review)
+        if (output.name != undefined) {
+            setReviewIds(output.userId)
+            setReviewUsernames(output.name)
+            setReviewComments(output.review)
+        }
     };
-
-    const filter = (data) =>
-    {
-        
-    }
-    const handleSubmit = async (data) =>
-    {
-    }
 
     return (
         <div onLoad={getAllParams} className={styles.container}>
@@ -93,7 +93,6 @@ export default function Magazine({ http })
                 </div>
                 <div className={styles.article}>
                     <h1>Article</h1>
-
                 </div>
                 <div>
                     <h1>Comments</h1>
