@@ -5,7 +5,7 @@ import FormContainer from "./FormContainer";
 import ReactDOM from "react-dom";
 import Comment from './Comment'
 
-import { Divider, Avatar, Grid, Paper, TextareaAutosize } from "@material-ui/core";
+import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
 
 import "./styles.css";
 
@@ -21,9 +21,9 @@ export default function Magazine({ http })
     const [review, setReview] = useState("");
 
 
-    const [followerid, setFollowerId] = useState([]);
-    const [magazinenamefollower, setMagazinenamefollower] = useState([]);
-    const [urlfollower, setUrlfollower] = useState([]);
+    const [reviewIds, setReviewIds] = useState([]);
+    const [reviewUsernames, setReviewUsernames] = useState([]);
+    const [reviewComments, setReviewComments] = useState([]);
     const [errors, setErrors] = useState([]);
 
     const getParameterByName = (name) => {
@@ -39,13 +39,12 @@ export default function Magazine({ http })
         if (!http.token) {
             return;
         }
-        console.log(magazineId)
         output = await http.get(`/magazine/getMagazineById?id=${magazineId}`);
-        console.log(output)
         setId(output.id);
         setMagazinename(output.name);
         setDescription(output.description);
 //        setFollowers(output.followers);
+        await getReviews();
     };
 
     const handleTextFieldChange = (e) => {
@@ -53,25 +52,20 @@ export default function Magazine({ http })
     };
 
     const addReview = async () => {
-        console.log("L'ID du mag : " + id)
-        console.log("Commentaire : " + review)
-        console.log("Token du user : " + http.token)
         const output = await http.post("/magazine/addReview", {
             magazineId: id,
             review: review,
             token: http.token
         });
-
     };
 
     const getReviews = async () => {
-/*        const output = await http.get(`/user/getReviews?id=${id}`);
+        let output = await http.get(`/magazine/getReviewsByMagazineId?id=1`);
         
-        setFollowerId(output.followerid);
-        setUsernamefollower(output.followerName);
-        setUrlfollower(output.avatarUrl);
-        console.log(followerid[0])
-    */    };
+        setReviewIds(output.userId)
+        setReviewUsernames(output.name)
+        setReviewComments(output.review)
+    };
 
     const filter = (data) =>
     {
@@ -105,31 +99,20 @@ export default function Magazine({ http })
                     <h1>Comments</h1>
                     <div style={{ padding: 14 }} className="Comments">
                     <Paper style={{ padding: "40px 20px" }}>
-                        <Grid container wrap="nowrap" spacing={6}>
-                        <Grid justifyContent="left" item xs zeroMinWidth>
+                        {reviewUsernames.map((name, index) => (
                             <Comment
                                 icon={icon}
-                                username="Michael"
-                                text="Chance too good. God level bars."
+                                username={name}
+                                text={reviewComments[index]}
                                 date="posted 1 minute ago"
+                                key={index}
+                                length={reviewComments.length}
                             />
-                        </Grid>
-                        </Grid>
-                        <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
-                        <Grid container wrap="nowrap" spacing={6}>
-                        <Grid justifyContent="left" item xs zeroMinWidth>
-                            <Comment
-                                icon={icon}
-                                username="John"
-                                text="Voici un petit test"
-                                date="posted 5 minute ago"
-                            />
-                        </Grid>
-                        </Grid>
+                        ))}
                     </Paper>
                     </div>
                     <div style={{marginTop:"90px"}}>
-                        <h3 class="jss195">Post your comment</h3>
+                        <h3>Post your comment</h3>
                         <form className={styles.root} noValidate autoComplete="off">
                             <div style={{display:"flex", alignItems: "center"}}>
                                 <Avatar alt="Remy Sharp" src={icon} />
