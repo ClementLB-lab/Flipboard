@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField, FormControlLabel, Switch, Modal, Tooltip } from "@material-ui/core";
+import { Button, TextField, FormControlLabel, Switch, Modal, GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
 export default function User({ http })
@@ -155,13 +155,20 @@ export default function User({ http })
                 </div>
                 <div>
                     <h1>Abonnés</h1>
-                    <div>
-                    {followerUsername.map((name, index) => (
-                        <li key={index}>
-                        {name}
-                        <img src={followerAvatar[index]} alt="User Icon" className={styles.icon} />
-                        </li>
-                    ))}
+                    <div className={styles.root}>
+                        <GridList className={styles.gridList} cols={2.5}>
+                            {followerUsername.map((name, index) => (
+                                <GridListTile>
+                                    <img src={followerAvatar[index]} alt="Follower Icon" />
+                                    <GridListTileBar
+                                        title={name}
+                                        classes={{
+                                            root: styles.titleBar
+                                        }}
+                                    />
+                                </GridListTile>
+                            ))}
+                        </GridList>
                     </div>
                 </div>
             </main>
@@ -221,9 +228,26 @@ const useStyles = makeStyles((theme) => ({
     text: {
         marginLeft: '96px'
     },
+
     customModal: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
+    },
+
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden'
+    },
+
+    gridList: {
+        flexWrap: 'nowrap',
+        transform: 'translateZ(0)'
+    },
+
+    titleBar: {
+        background: 'linear-gradient(to tap, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0) 100%)'
     }
 }));
