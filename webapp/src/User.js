@@ -40,7 +40,6 @@ export default function User({ http })
 
         const response = await http.get(`/user/getFollowers?id=${_id}`);
 
-        console.log(response);
         setFollowerUsername(response.followerName);
         setFollowerInfos(response);
         setFollowerAvatar(response.avatarUrl);
@@ -48,9 +47,8 @@ export default function User({ http })
 
     const getMagazines = async () => {
         const output = await http.get(`/user/getMagazinesByOwnerId?id=${id}`);
-        
         setMagazinename(output);
-        console.log(output);
+
     };
 
     const filter = (data) =>
@@ -72,7 +70,7 @@ export default function User({ http })
         }
     }
 
-    console.log(followerInfos)
+//    console.log(followerInfos)
     // const test = followerUsername.map(follower => {
     //     return (
     //         <p>{follower}</p>
@@ -158,7 +156,12 @@ export default function User({ http })
                 <div>
                     <h1>Abonnés</h1>
                     <div>
-                        {/* {test} */}
+                    {followerUsername.map((name, index) => (
+                        <li key={index}>
+                        {name}
+                        <img src={followerAvatar[index]} alt="User Icon" className={styles.icon} />
+                        </li>
+                    ))}
                     </div>
                 </div>
             </main>
