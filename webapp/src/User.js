@@ -58,9 +58,12 @@ export default function User({ http })
             token: http.token
         };
         const output = await http.post(`/user/createmagazine`, magazine);
-        
+
         if (output.success) {
             alert("Votre magazine a bien été créé.");
+            setModalIsOpen(false);
+        } else {
+            alert("Vous ne pouvez pas créer un magazine avec le nom d'un magazine déjà existant");
             setModalIsOpen(false);
         }
     }
@@ -90,7 +93,7 @@ export default function User({ http })
 
                     <div className={styles.root}>
                         <GridList className={styles.gridList} cols={2}>
-                            {magazineName.map((name, index) => (
+                            {magazineName.map((name) => (
                                 <GridListTile>
                                     <div className={styles.rectangle}></div>
                                     <GridListTileBar
@@ -142,7 +145,7 @@ export default function User({ http })
                             />
                             <div>
                                 <Button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</Button>
-                                <Button>Sauvegarder</Button>
+                                <Button type="submit" variant="contained" color="primary">Sauvegarder</Button>
                             </div>
                         </FormContainer>
                     </Modal>
