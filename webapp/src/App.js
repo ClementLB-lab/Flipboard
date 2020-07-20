@@ -15,6 +15,7 @@ import Settings from "./Settings";
 import Magazine from "./Magazine";
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
+import Profile from "./Profile";
 
 const http = new Http("http://localhost:3001");
 
@@ -60,6 +61,9 @@ export default function App()
                             </Route>
                             <Route path="/user">
                                 <User http={http} />
+                            </Route>
+                            <Route path="/profile">
+                                <Profile http={http} />
                             </Route>
                             <Route path="/settings">
                                 <Settings http={http} />
