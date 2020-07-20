@@ -12,7 +12,7 @@ export const transporter = nodemailer.createTransport({
 })
 
 export const getPasswordResetURL = (user, token) =>
-  `http://localhost:3000/resetPassword/${user.id}/${token}`
+  `http://localhost:3000/resetPassword?id=${user.id}&token=${token}`
 
 export const resetPasswordTemplate = (user, url) => {
   const from = process.env.EMAIL_LOGIN
