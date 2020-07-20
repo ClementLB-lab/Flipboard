@@ -25,6 +25,7 @@ export default function Magazine({ http })
     const [reviewIds, setReviewIds] = useState([]);
     const [reviewUsernames, setReviewUsernames] = useState([]);
     const [reviewComments, setReviewComments] = useState([]);
+    const [reviewDates, setReviewDates] = useState([]);
     const [errors, setErrors] = useState([]);
 
     const getParameterByName = (name) => {
@@ -69,9 +70,11 @@ export default function Magazine({ http })
         let output = await http.get(`/magazine/getReviewsByMagazineId?id=${magId}`);
         
         if (output.name != undefined) {
+            console.log(output.date)
             setReviewIds(output.userId)
             setReviewUsernames(output.name)
             setReviewComments(output.review)
+            setReviewDates(output.date)
         }
     };
 
@@ -103,7 +106,7 @@ export default function Magazine({ http })
                                 icon={icon}
                                 username={name}
                                 text={reviewComments[index]}
-                                date="posted 1 minute ago"
+                                date={reviewDates[index]}
                                 key={index}
                                 length={reviewComments.length}
                             />
