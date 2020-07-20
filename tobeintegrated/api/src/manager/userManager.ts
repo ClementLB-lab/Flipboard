@@ -3,6 +3,7 @@ import Follower from "../models/Follower";
 import ImageLink from "../models/ImageLink";
 import Magazine from "../models/Magazine";
 import Favorite from "../models/Favorite";
+import Review from "../models/Review";
 
 export default class UserManager {
 
@@ -77,6 +78,7 @@ export default class UserManager {
         Follower.destroy({ where: { followerId: user.id } })
         Magazine.destroy({ where: { ownerId: user.id } })
         ImageLink.destroy({ where: { ownerId: user.id } })
+        Review.destroy({ where: { userId: user.id } })
         await User.destroy({ where: { id: user.id } })
     }
 

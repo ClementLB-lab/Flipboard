@@ -319,15 +319,20 @@ export default class UserService {
     /**
      * Delete account
      *
+     * @param password The password in clear
      * @param token The token of the user
      * 
      * @return the error message or success
      */
-    public async deleteAccount(token: jwt.Token): Promise<Result> {
+    public async deleteAccount(password:string, token: jwt.Token): Promise<Result> {
         const user = await this.getByJWT(token)
 
         if (!user)
             return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
+
+        const match = await pwdUtil.checkMatch(password, user.passwordHash)
+        if (!match)
+            return Result.error("Mot de passe incorrect")
 
         await this.userManager.deleteAccount(user)
         return Result.success()

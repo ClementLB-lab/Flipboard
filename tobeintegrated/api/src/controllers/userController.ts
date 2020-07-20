@@ -393,6 +393,7 @@ export default class UserController {
      * deletes the account of the logged-in user
      *
      * body {
+     *      password: The password in clear
      *      token: The JWT auth token
      * }
      *
@@ -404,9 +405,9 @@ export default class UserController {
      *
      */
     public async deleteAccount(req: Request, res: Response) {
-        const { token } = req.body;
+        const { password, token } = req.body;
 
-        const result = await this.userService.deleteAccount(token)
+        const result = await this.userService.deleteAccount(password, token)
 
         if (result.isSuccessful())
             return res.status(200).json({ success: true });
