@@ -19,7 +19,7 @@ export default class MagazineManager {
         return Review.findAll({ where: { magazineId: magazineId } })
     }
 
-    public async deleteReview(userId: number, magazineId: number): Promise<void> {
-        await Review.destroy({ where: { userId: userId, magazineId: magazineId } })
+    public async deleteReview(userId: number, magazineId: number, reviewId: number): Promise<void> {
+        await Review.destroy({ where: { id: reviewId, userId: userId, magazineId: magazineId} })
     }
 }

@@ -108,6 +108,7 @@ export default class MagazineController {
             return res.status(200).json({ })
 
         let tabIds = []
+        let tabUserIds = []
         let tabNames = []
         let tabReviews = []
         let tabDateReviews = []
@@ -116,14 +117,16 @@ export default class MagazineController {
             let newDate = Date.parse(reviews[i].updatedAt);
             newDate /= 1000 
             if (user) {
-                tabIds.push(user.id)
+                tabIds.push(reviews[i].id)
+                tabUserIds.push(user.id)
                 tabNames.push(user.name)
                 tabReviews.push(reviews[i].review)
                 tabDateReviews.push(newDate - 7200)
             }
         }
         let result = {
-            userId: tabIds,
+            id: tabIds,
+            userId: tabUserIds,
             name: tabNames,
             review: tabReviews,
             date: tabDateReviews 
@@ -148,9 +151,9 @@ export default class MagazineController {
      *      err: Potential error message (FR)
      */
     public async deleteReview(req: Request, res: Response) {
-        const { magazineId, token } = req.body;
+        const { magazineId, reviewId, token } = req.body;
 
-        const result = await this.magazineService.deleteReview(magazineId, token)
+        const result = await this.magazineService.deleteReview(magazineId, reviewId, token)
 
         if (result.isSuccessful())
             return res.status(200).json({ success: true });

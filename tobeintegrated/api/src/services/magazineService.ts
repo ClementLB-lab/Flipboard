@@ -93,16 +93,16 @@ export default class MagazineService {
      * 
      * @return the magazines or null if no match ownerID
      */
-    public async deleteReview(magazineId: number, token: jwt.Token): Promise<Result> {
-        if (!magazineId)
-            return Result.error("Votre magazineId est invalide.")
+    public async deleteReview(magazineId: number, reviewId: number, token: jwt.Token): Promise<Result> {
+        if (!magazineId || !reviewId)
+            return Result.error("Un de vos IDs est invalide.")
         
         const user = await this.userService.getByJWT(token)
 
         if (!user)
             return Result.error("Impossible de récupérer votre profil à partir de votre token de connexion.")
         
-        await this.magazineManager.deleteReview(user.id, magazineId);
+        await this.magazineManager.deleteReview(user.id, magazineId, reviewId);
         return Result.success()
     }
 }
