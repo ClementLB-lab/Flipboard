@@ -74,8 +74,7 @@ export default function User({ http })
     }
 
     const AccessUserProfile = async (data) => {
-        http.setId(data);
-        history.push("/profile");
+        history.push("/profile?id=" + data);
     }
 
     const AccessMagazineById = async (data) => {

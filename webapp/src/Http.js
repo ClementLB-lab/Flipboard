@@ -4,7 +4,6 @@ export default class Http
     {
         this.baseUrl = url;
         this.token = sessionStorage.getItem("token");
-        this.id = sessionStorage.getItem("id");
     }
 
     async req(method, url, params = undefined)
@@ -47,10 +46,5 @@ export default class Http
     get isConnected()
     {
         return (this.token !== undefined)
-    }
-    setId(id)
-    {
-        sessionStorage.setItem("id", id);
-        this.id = id;
     }
 }

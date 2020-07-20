@@ -12,6 +12,7 @@ export default function Profile({ http })
     const [username, setUsername] = useState("");
     const [followers, setFollowers] = useState("");
     const [magazines, setMagazines] = useState("");
+    const [id, setId] = useState("");
     const [bio, setBio] = useState("");
 
     const [followerUsername, setFollowerUsername] = useState([]);
@@ -21,27 +22,45 @@ export default function Profile({ http })
     const [magazineName, setMagazineName] = useState([]);
     const [magazineId, setMagazineId] = useState([]);
 
+    const [boolCondition, setBoolCondition] = useState();
+
+    const getParameterByName = (name) => {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(window.location.href);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     const getAllParams = async () => {
+        const profileId = getParameterByName('id');
         let output;
 
-        if (!http.id) {
+        if (!http.token) {
+            history.push('/');
             return;
         }
-        output = await http.get(`/user/getById?id=${http.id}`);
-        setUsername(output.name);
-        setBio(output.bio);
-        setFollowers(output.followers);
-        setMagazines(output.magazines);
+        output = await http.get(`/user/getById?id=${profileId}`);
+        if (output === null) {
+            history.push('/login');
+        } else {
+            setId(output.id);
+            setUsername(output.name);
+            setBio(output.bio);
+            setFollowers(output.followers);
+            setMagazines(output.magazines);
+        }
 
-        const responseFollower = await http.get(`/user/getFollowers?id=${http.id}`);
+        const responseFollower = await http.get(`/user/getFollowers?id=${profileId}`);
 
         if (responseFollower.followerName !== undefined) {
             setFollowerUsername(responseFollower.followerName);
             setFollowerAvatar(responseFollower.avatarUrl);
             setFollowerID(responseFollower.followerId);
+            setBoolCondition(true);
+        } else {
+            setBoolCondition(false);
         }
 
-        const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${http.id}`);
+        const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${profileId}`);
 
         if (responseMagazine !== undefined) {
             setMagazineName(responseMagazine.name);
@@ -49,16 +68,18 @@ export default function Profile({ http })
         }
     };
 
-    const handleClick = async () => {
+    const handleClick = async (bool) => {
         const body = {
             token: http.token,
-            profileId: http.id
+            profileId: id
         };
         const output = await http.post(`/user/profilefollow`, body)
 
         if (!(output.success)) {
             alert("Erreur. L'utilisateur n'a pas pu être ajouté à votre liste d'abonnée");
         }
+
+        setBoolCondition(!boolCondition);
     }
 
     const AccessUserProfile = async (data) => {
@@ -68,9 +89,7 @@ export default function Profile({ http })
         if (output.id === data) {
             history.push("/user");
         } else {
-            console.log("I'm here");
-            http.setId(data);
-            history.push("/profile");
+            history.push("/profile?id=" + data);
             history.go();
         }
     }
@@ -93,7 +112,7 @@ export default function Profile({ http })
                     </div>
                 </header>
                 <div>
-                    <Button className={styles.text} variant="contained" color="primary" onClick={handleClick}>Follow</Button>
+                    <Button className={styles.text} variant="contained" color="primary" onClick={() => handleClick(boolCondition)}>{boolCondition ? 'Unfollow' : 'Follow'}</Button>
                 </div>
                 <div>
                     <p className={styles.text}>{followers} Followers | {magazines} Magazines</p>
