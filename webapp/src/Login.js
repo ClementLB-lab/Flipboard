@@ -23,6 +23,7 @@ export default function Login({ http, setHttp })
             return (false);
         }
         if (output.success) {
+            console.log(output);
             setHttp(http.setToken(output.token));
             history.push("/user");
         }

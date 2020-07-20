@@ -17,12 +17,11 @@ import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
 import Profile from "./Profile";
 
-const http = new Http("http://localhost:3001");
-
 export default function App()
 {
     const styles = useStyles();
     const [articles, setArticles] = React.useState([]);
+    const [http, setHttp] = React.useState(new Http("http://localhost:3001"));
     
     const getArticles = async (tag) =>
     {
@@ -37,15 +36,15 @@ export default function App()
     }
     return (
             <ThemeProvider theme={theme}>
-                <Header onSearch={getArticles} http={http} />
+                <Header onSearch={getArticles} http={http} setHttp={setHttp} />
                 <div className={styles.container}>
                     <div className={styles.filter}>
                         <Switch>
                             <Route path="/register">
-                                <Register http={http} />
+                                <Register http={http} setHttp={setHttp} />
                             </Route>
                             <Route path="/login">
-                                <Login http={http} />
+                                <Login http={http} setHttp={setHttp} />
                             </Route>
                             <Route path="/forgotPassword">
                                 <ForgotPassword http={http} />

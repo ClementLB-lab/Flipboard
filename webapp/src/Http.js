@@ -40,8 +40,12 @@ export default class Http
     }
     setToken(token)
     {
-        sessionStorage.setItem("token", token);
+        if (!token)
+            sessionStorage.removeItem("token");
+        else
+            sessionStorage.setItem("token", token);
         this.token = token;
+        return (this);
     }
     get isConnected()
     {
