@@ -19,6 +19,7 @@ export default function Profile({ http })
     const [followerID, setFollowerID] = useState([]);
 
     const [magazineName, setMagazineName] = useState([]);
+    const [magazineId, setMagazineId] = useState([]);
 
     const getAllParams = async () => {
         let output;
@@ -43,8 +44,8 @@ export default function Profile({ http })
         const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${http.id}`);
 
         if (responseMagazine !== undefined) {
-            setMagazineName(responseMagazine);
-            console.log(responseMagazine);
+            setMagazineName(responseMagazine.name);
+            setMagazineId(responseMagazine.id);
         }
     };
 
@@ -74,6 +75,11 @@ export default function Profile({ http })
         }
     }
 
+    const AccessMagazineById = async (data) => {
+        console.log(data);
+        history.push("/magazine?id=" + data);
+    }
+
     return (
         <div onLoad={getAllParams} className={styles.container}>
             <main className={styles.main}>
@@ -98,7 +104,7 @@ export default function Profile({ http })
 
                     <div className={styles.root}>
                         <GridList className={styles.gridList} cols={2}>
-                            {magazineName.map((name) => (
+                            {magazineName.map((name, index) => (
                                 <GridListTile>
                                     <div className={styles.rectangle}></div>
                                     <GridListTileBar
@@ -106,6 +112,7 @@ export default function Profile({ http })
                                         classes={{
                                             root: styles.titleBar
                                         }}
+                                        onClick={() => AccessMagazineById(magazineId[index])}
                                     />
                                 </GridListTile>
                             ))}

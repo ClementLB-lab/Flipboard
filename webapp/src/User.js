@@ -23,6 +23,7 @@ export default function User({ http })
     const [followerID, setFollowerID] = useState([]);
 
     const [magazineName, setMagazineName] = useState([]);
+    const [magazineId, setMagazineId] = useState([]);
     const [toggle, setToggle] = useState(false);
 
     const getAllParams = async () => {
@@ -48,9 +49,9 @@ export default function User({ http })
         }
 
         const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${id}`);
-
         if (responseMagazine !== undefined) {
-            setMagazineName(responseMagazine);
+            setMagazineName(responseMagazine.name);
+            setMagazineId(responseMagazine.id);
         }
     };
 
@@ -79,6 +80,7 @@ export default function User({ http })
 
     const AccessMagazineById = async (data) => {
         console.log(data);
+        history.push("/magazine?id=" + data);
     }
 
     return (
@@ -114,7 +116,7 @@ export default function User({ http })
                                         classes={{
                                             root: styles.titleBar
                                         }}
-                                        onClick={() => AccessMagazineById(index)}
+                                        onClick={() => AccessMagazineById(magazineId[index])}
                                     />
                                 </GridListTile>
                             ))}

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Search from "./Search";
 import logo from './images/flipboard.png';
 
-export default function Header({onSearch})
+export default function Header({onSearch, http})
 {
     const styles = useStyles();
     const history = useHistory();
@@ -19,6 +19,29 @@ export default function Header({onSearch})
     const onRegister = () => {
         history.push("/register");
     }
+    const onLogout = () => {
+        http.setToken(undefined);
+        history.push("/");
+    }
+    const onMyProfile = () => {
+        history.push("/user");
+    }
+    const displayLogMenu = () => {
+        if (!http.token) {
+            return (
+                <div className={styles.registration}>
+                    <Button variant="contained" onClick={onLogin}>Login</Button>
+                    <Button variant="contained" onClick={onRegister}>Register</Button>
+                </div>
+            );
+        }
+        return (
+            <div className={styles.registration}>
+                <Button variant="contained" onClick={onMyProfile}>My profile</Button>
+                <Button variant="contained" onClick={onLogout}>Logout</Button>
+            </div>
+        );
+    }
 
     return (
         <AppBar position="static">
@@ -30,12 +53,9 @@ export default function Header({onSearch})
                             Flipboard
                         </Typography>
                     </div>
-                    <Search onSearch={onSearch}/>
+                    {http.token ? <Search onSearch={onSearch}/> : ""}
                 </div>
-                <div className={styles.registration}>
-                    <Button variant="contained" onClick={onLogin}>Login</Button>
-                    <Button variant="contained" onClick={onRegister}>Register</Button>
-                </div>
+                {displayLogMenu()}
             </Toolbar>
         </AppBar>
     );
