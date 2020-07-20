@@ -48,9 +48,13 @@ export default class MagazineController {
 
         const magazines = await this.magazineService.getMagazinesByOwnerId(userId)
 
-        let result = []
+        let result = {
+            name: [],
+            id: []
+        }
         for (let i = 0; i != magazines.length; i++) {
-            result.push(magazines[i].name)
+            result.name.push(magazines[i].name)
+            result.id.push(magazines[i].id)
         }
         return res.status(200).json(result)
     }
