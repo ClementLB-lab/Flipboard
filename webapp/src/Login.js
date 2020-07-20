@@ -1,29 +1,29 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Button, Link } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
-export default function Login({ http })
+export default function Login({ http, setHttp })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
     const history = useHistory();
     
     const filter = (data) => {
+        setErrors([]);
         return (true);
     }
 
     const onSubmit = async (data) => {
         const output = await http.post("/user/login", data);
 
-        console.log(output)
         if (output.err) {
             setErrors(errors.concat(output.err));
             return (false);
         }
         if (output.success) {
-            http.setToken(output.token);
+            setHttp(http.setToken(output.token));
             history.push("/user");
         }
         else
@@ -59,10 +59,8 @@ export default function Login({ http })
                 fullWidth
                 required
             />
-            <Link href="/forgotPassword">
-                Lost your password
-            </Link>
             <Button type="submit" variant="contained" color="primary">Login!</Button>
+            <Button onClick={() => history.push("/forgotPassword")}>Lost your password</Button>
         </FormContainer>
     );
 }

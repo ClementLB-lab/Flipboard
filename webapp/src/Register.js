@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
-export default function Register({ http })
+export default function Register({ http, setHttp })
 {
     const [errors, setErrors] = React.useState([]);
 	const styles = useStyles();
@@ -30,13 +30,12 @@ export default function Register({ http })
             password: data.password
         });
 
-        console.log(output)
         if (output.err) {
             setErrors([output.err]);
             return (false);
         }
         if (output.success) {
-            http.setToken(output.token);
+            setHttp(http.setToken(output.token));
             history.push("/user");
         }
         return (output.success);

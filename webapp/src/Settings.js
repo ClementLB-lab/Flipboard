@@ -129,7 +129,12 @@ export default function Settings({ http })
                 </header>
                 <hr />
                 <h1>User settings</h1>
-                <form onSubmit={handleSubmit}>
+                <FormContainer 
+                    title="User settings"
+                    errors={[]}
+                    filter={filter}
+                    onSubmit={handleSubmit}
+                >
                     <TextField
                         label="Username"
                         name="username"
@@ -165,7 +170,7 @@ export default function Settings({ http })
                         rows={4}
                      />
                     <FormControlLabel
-                        label="Profil privé"
+                        label="Private profile"
                         control={
                             <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} name="private" />
                         }
@@ -179,7 +184,7 @@ export default function Settings({ http })
                         className={styles.input}
                     />
                     <Button variant="contained" color="primary" type="submit">Save</Button>
-                </form>
+                </FormContainer>
                 <div>
                     <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
                     <h1>Account settings</h1>

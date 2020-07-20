@@ -5,10 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Search from "./Search";
 import logo from './images/flipboard.png';
 
-export default function Header({onSearch, http})
+export default function Header({onSearch, http, setHttp})
 {
     const styles = useStyles();
     const history = useHistory();
+    
     const goHome = () => 
     {
         history.push("/");
@@ -20,7 +21,7 @@ export default function Header({onSearch, http})
         history.push("/register");
     }
     const onLogout = () => {
-        http.setToken(undefined);
+        setHttp(http.setToken(null));
         history.push("/");
     }
     const onMyProfile = () => {
