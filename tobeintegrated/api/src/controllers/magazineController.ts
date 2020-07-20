@@ -106,18 +106,23 @@ export default class MagazineController {
         let tabIds = []
         let tabNames = []
         let tabReviews = []
+        let tabDateReviews = []
         for (let i = 0; i != reviews.length; i++) {
             let user = await this.userService.getById(reviews[i].userId)
+            let newDate = Date.parse(reviews[i].updatedAt);
+            newDate /= 1000 
             if (user) {
                 tabIds.push(user.id)
                 tabNames.push(user.name)
                 tabReviews.push(reviews[i].review)
+                tabDateReviews.push(newDate - 7200)
             }
         }
         let result = {
             userId: tabIds,
             name: tabNames,
-            review: tabReviews
+            review: tabReviews,
+            date: tabDateReviews 
         }
         return res.status(200).json(result)
     }
