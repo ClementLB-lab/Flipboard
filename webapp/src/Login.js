@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Link } from "@material-ui/core";
 import FormContainer from "./FormContainer";
 
 export default function Login({ http })
@@ -17,8 +17,9 @@ export default function Login({ http })
     const onSubmit = async (data) => {
         const output = await http.post("/user/login", data);
 
-        if (output.error) {
-            setErrors(errors.concat(output.error));
+        console.log(output)
+        if (output.err) {
+            setErrors(errors.concat(output.err));
             return (false);
         }
         if (output.success) {
@@ -58,6 +59,9 @@ export default function Login({ http })
                 fullWidth
                 required
             />
+            <Link href="/forgotPassword">
+                Lost your password
+            </Link>
             <Button type="submit" variant="contained" color="primary">Login!</Button>
         </FormContainer>
     );

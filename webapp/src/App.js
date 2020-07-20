@@ -13,6 +13,8 @@ import Register from "./Register";
 import User from "./User";
 import Settings from "./Settings";
 import Magazine from "./Magazine";
+import ForgotPassword from "./ForgotPassword";
+import ResetPassword from "./ResetPassword";
 
 const http = new Http("http://localhost:3001");
 
@@ -43,6 +45,12 @@ export default function App()
                             </Route>
                             <Route path="/login">
                                 <Login http={http} />
+                            </Route>
+                            <Route path="/forgotPassword">
+                                <ForgotPassword http={http} />
+                            </Route>
+                            <Route path="/resetPassword">
+                                <ResetPassword http={http} />
                             </Route>
                             <Route path="/publishers">
                                 <Publishers />
