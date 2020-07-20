@@ -89,14 +89,14 @@ export default class MagazineController {
      * Returns all review of a magazine
      *
      * body {
-     *      magazineId: the magazine ID
+     *      id: the magazine ID
      * }
      *
      * return:
      * 200 - data : Review[]
      */
     public async getReviewsByMagazineId(req: Request, res: Response) {
-        const { magazineId } = req.body;
+        const magazineId = parseInt(req.query.id as string);
 
         const reviews = await this.magazineService.getReviewsByMagazineId(magazineId)
 
