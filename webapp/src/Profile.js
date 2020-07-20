@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core";
-import { Button, TextField, FormControlLabel, Switch, Modal, GridList, GridListTile, GridListTileBar } from "@material-ui/core";
-import FormContainer from "./FormContainer";
+import { Button, GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
 
-export default function User({ http })
+export default function Profile({ http })
 {
     const styles = useStyles();
     const history = useHistory();
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const icon = 'https://i0.wp.com/www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg';
     const [username, setUsername] = useState("");
     const [followers, setFollowers] = useState("");
     const [magazines, setMagazines] = useState("");
-    const [id, setId] = useState("");
     const [bio, setBio] = useState("");
 
     const [followerUsername, setFollowerUsername] = useState([]);
@@ -23,23 +19,20 @@ export default function User({ http })
     const [followerID, setFollowerID] = useState([]);
 
     const [magazineName, setMagazineName] = useState([]);
-    const [toggle, setToggle] = useState(false);
 
     const getAllParams = async () => {
         let output;
 
-        if (!http.token) {
+        if (!http.id) {
             return;
         }
-        output = await http.get(`/user/getByJWT?token=${http.token}`);
-        let _id = output.id;
-        setId(output.id);
+        output = await http.get(`/user/getById?id=${http.id}`);
         setUsername(output.name);
         setBio(output.bio);
         setFollowers(output.followers);
         setMagazines(output.magazines);
 
-        const responseFollower = await http.get(`/user/getFollowers?id=${_id}`);
+        const responseFollower = await http.get(`/user/getFollowers?id=${http.id}`);
 
         if (responseFollower.followerName !== undefined) {
             setFollowerUsername(responseFollower.followerName);
@@ -47,38 +40,38 @@ export default function User({ http })
             setFollowerID(responseFollower.followerId);
         }
 
-        const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${id}`);
+        const responseMagazine = await http.get(`/magazine/getMagazinesByOwnerId?id=${http.id}`);
 
         if (responseMagazine !== undefined) {
             setMagazineName(responseMagazine);
+            console.log(responseMagazine);
         }
     };
 
-    const handleSubmit = async (data) =>
-    {
-        const magazine = {
-            name: data.title,
-            description: data.description,
-            token: http.token
+    const handleClick = async () => {
+        const body = {
+            token: http.token,
+            profileId: http.id
         };
-        const output = await http.post(`/user/createmagazine`, magazine);
+        const output = await http.post(`/user/profilefollow`, body)
 
-        if (output.success) {
-            alert("Votre magazine a bien été créé.");
-            setModalIsOpen(false);
-        } else {
-            alert("Vous ne pouvez pas créer un magazine avec le nom d'un magazine déjà existant");
-            setModalIsOpen(false);
+        if (!(output.success)) {
+            alert("Erreur. L'utilisateur n'a pas pu être ajouté à votre liste d'abonnée");
         }
     }
 
     const AccessUserProfile = async (data) => {
-        http.setId(data);
-        history.push("/profile");
-    }
-
-    const AccessMagazineById = async (data) => {
         console.log(data);
+        let output = await http.get(`/user/getByJWT?token=${http.token}`);
+
+        if (output.id === data) {
+            history.push("/user");
+        } else {
+            console.log("I'm here");
+            http.setId(data);
+            history.push("/profile");
+            history.go();
+        }
     }
 
     return (
@@ -94,19 +87,18 @@ export default function User({ http })
                     </div>
                 </header>
                 <div>
+                    <Button className={styles.text} variant="contained" color="primary" onClick={handleClick}>Follow</Button>
+                </div>
+                <div>
                     <p className={styles.text}>{followers} Followers | {magazines} Magazines</p>
                     <hr />
                 </div>
                 <div className={styles.magazine}>
                     <h1>Magazines</h1>
 
-                    <Button className={styles.addMagazineButton} variant="contained" color="primary" onClick={() => setModalIsOpen(true)}>
-                        Créer un nouveau magazine
-                    </Button>
-
                     <div className={styles.root}>
                         <GridList className={styles.gridList} cols={2}>
-                            {magazineName.map((name, index) => (
+                            {magazineName.map((name) => (
                                 <GridListTile>
                                     <div className={styles.rectangle}></div>
                                     <GridListTileBar
@@ -114,55 +106,11 @@ export default function User({ http })
                                         classes={{
                                             root: styles.titleBar
                                         }}
-                                        onClick={() => AccessMagazineById(index)}
                                     />
                                 </GridListTile>
                             ))}
                         </GridList>
                     </div>
-
-                    <Modal 
-                        open={modalIsOpen}
-                        className={styles.customModal}
-                        onClose={() => setModalIsOpen(false)}
-                    >
-                        <FormContainer
-                            title="Create a new magazine" 
-                            onSubmit={handleSubmit}
-                            errors={[]}
-                        >
-                            <TextField
-                                label="Title"
-                                name="title"
-                                variant="filled"
-                                minLength={3}
-                                className={styles.input}
-                                fullWidth
-                                required
-                            />
-                            <TextField
-                                label="Description"
-                                name="description"
-                                variant="filled"
-                                minLength={10}
-                                className={styles.input}
-                                fullWidth
-                                required
-                                multiline
-                                rows={4}
-                            />
-                            <FormControlLabel
-                                label="Magazine privé"
-                                control={
-                                    <Switch checked={toggle} onChange={(e) => setToggle(e.target.checked)} name="private" />
-                                }
-                            />
-                            <div>
-                                <Button color="secondary" onClick={() => setModalIsOpen(false)}>Annuler</Button>
-                                <Button type="submit" variant="contained" color="primary">Sauvegarder</Button>
-                            </div>
-                        </FormContainer>
-                    </Modal>
                 </div>
                 <div>
                     <h1>Abonnés</h1>
