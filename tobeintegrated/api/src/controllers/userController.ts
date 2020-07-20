@@ -79,10 +79,7 @@ export default class UserController {
      *  data : {
      *      success: whether the user has been registered
      *      token: The generated JWT (in case of success)
-     *      fieldsErrors {
-     *          For each field containing error :
-     *          [field name] : [error message (FR)]
-     *      }
+     *      err: Potential error message (FR)
      * }
      */
     public async register(req: Request, res: Response) {
@@ -93,7 +90,7 @@ export default class UserController {
         if (result.isSuccessful())
             return res.status(200).json({ success: true, token: result.getData() })
         else
-            return res.status(200).json({ success: false, fieldsErrors: result.getError() })
+            return res.status(200).json({ success: false, err: result.getError() })
     }
 
     /**
@@ -110,10 +107,7 @@ export default class UserController {
      *  data : {
      *      success: whether the user has been registered
      *      token: The generated JWT (in case of success)
-     *      fieldsErrors {
-     *          For each field containing error :
-     *          [field name] : [error message (FR)]
-     *      }
+     *      err: Potential error message (FR)
      * }
      */
     public async login(req: Request, res: Response) {
@@ -124,7 +118,7 @@ export default class UserController {
         if (result.isSuccessful())
             return res.status(200).json({ success: true, token: result.getData() })
         else
-            return res.status(200).json({ success: false, fieldsErrors: result.getError() })
+            return res.status(200).json({ success: false, err: result.getError() })
     }
 
     /**
@@ -139,10 +133,7 @@ export default class UserController {
      * 200 -
      *  data : {
      *      success: whether the user has been registered
-     *      fieldsErrors {
-     *          For each field containing error :
-     *          [field name] : [error message (FR)]
-     *      }
+     *      err: Potential error message (FR)
      * }
      */
     public async forgotpwd(req: Request, res: Response) {
@@ -153,7 +144,7 @@ export default class UserController {
         if (result.isSuccessful())
             return res.status(200).json({ success: true })
         else
-            return res.status(200).json({ success: false, fieldsErrors: result.getError() })
+            return res.status(200).json({ success: false, err: result.getError() })
     }
 
     /**
@@ -169,10 +160,7 @@ export default class UserController {
      * 200 -
      *  data : {
      *      success: whether the user has been registered
-     *      fieldsErrors {
-     *          For each field containing error :
-     *          [field name] : [error message (FR)]
-     *      }
+     *      err: Potential error message (FR)
      * }
      */
     public async resetpwd(req: Request, res: Response) {
@@ -183,7 +171,7 @@ export default class UserController {
         if (result.isSuccessful())
             return res.status(200).json({ success: true })
         else
-            return res.status(200).json({ success: false, fieldsErrors: result.getError() })
+            return res.status(200).json({ success: false, err: result.getError() })
     }
 
     /**
@@ -201,9 +189,7 @@ export default class UserController {
      * 200 -
      *  data : {
      *      success: whether the user has been registered
-     *      fieldsErrors {
-     *          For each field containing error :
-     *          [field name] : [error message (FR)]
+     *      err: Potential error message (FR)
      *      }
      * }
      */
@@ -215,7 +201,7 @@ export default class UserController {
         if (result.isSuccessful())
             return res.status(200).json({ success: true })
         else
-            return res.status(200).json({ success: false, fieldsErrors: result.getError() })
+            return res.status(200).json({ success: false, err: result.getError() })
     }
 
     /**

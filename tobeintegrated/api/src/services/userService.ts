@@ -51,23 +51,16 @@ export default class UserService {
      * @param password The password in clear, it will hashed and salted
      */
     public async register(name: string, email: string, password: string): Promise<Result<jwt.Token, Object>> {
-        let fieldsErrors: any = {};
 
         if (!name || !validator.isLength(name, { min: 3 }))
-            fieldsErrors.name = "Le nom doit contenir au moins 3 charactères"
+            return Result.error("Le nom doit contenir au moins 3 charactères");
         if (!email || !validator.isEmail(email))
-            fieldsErrors.email = "Email invalide"
+        return Result.error("Email invalide");
         if (!password || !validator.isLength(password, { min: 8 }))
-            fieldsErrors.password = "Le mot de passe doit contenir au moins 8 caractères"
+        return Result.error("Le mot de passe doit contenir au moins 8 caractères");
+        if (await this.userManager.getByEmail(email))
+            return Result.error("Email déjà utilisée");
 
-        if (Object.keys(fieldsErrors).length)
-            return Result.error(fieldsErrors)
-
-
-        if (await this.userManager.getByEmail(email)) {
-            fieldsErrors.email = "Email déjà utilisée"
-            return Result.error(fieldsErrors)
-        }
 
         const createdUser = await this.userManager.create(name, email, pwdUtil.hash(password))
 
@@ -84,11 +77,11 @@ export default class UserService {
         const user = await this.userManager.getByEmail(email)
 
         if (!user)
-            return Result.error({ email: "Email inconnue" })
+            return Result.error("Email inconnue")
 
         const match = await pwdUtil.checkMatch(password, user.passwordHash)
         if (!match)
-            return Result.error({ password: "Mot de passe incorrect" })
+            return Result.error("Mot de passe incorrect")
 
         return Result.success(jwt.getTokenForUser(user))
     }
@@ -104,7 +97,7 @@ export default class UserService {
 
         const user = await this.userManager.getByEmail(email)
         if (!user)
-            return Result.error({ email: "Email inconnue" })
+            return Result.error("Email inconnue")
         const token = jwt.usePasswordHashToMakeToken(user)
         const url = emailUtil.getPasswordResetURL(user, token)
         const emailTemplate = emailUtil.resetPasswordTemplate(user, url)
@@ -122,19 +115,15 @@ export default class UserService {
     }
 
     public async resetpwd(password: string, password2: string, id: number, token: string): Promise<Result> {
-        let fieldsErrors: any = {};
 
         if (!id || !token)
             return Result.error("Une erreur c'est produite lors de l'envoie de certaines données")
 
         if (!password || !validator.isLength(password, { min: 8 }))
-            fieldsErrors.password = "Le mot de passe doit contenir au moins 8 caractères"
+        return Result.error("Le mot de passe doit contenir au moins 8 caractères");
 
         if (password != password2)
-            fieldsErrors.password = "Les 2 mots de passe doivent être identiques"
-
-        if (Object.keys(fieldsErrors).length)
-            return Result.error(fieldsErrors)
+        return Result.error("Les 2 mots de passe doivent être identiques");
 
         const user = await this.userManager.getById(id);
 
@@ -154,17 +143,13 @@ export default class UserService {
     }
 
     public async resetCurrentPassword(token: jwt.Token, currentpassword: string, password: string, password2: string): Promise<Result<jwt.Token, Object>> {
-        let fieldsErrors: any = {};
 
         if (!currentpassword || !password || !password2)
-            fieldsErrors.password2 = "Vous n'avez pas rempli tous les champs\n"
+        return Result.error("Vous n'avez pas rempli tous les champs\n");
         else if (!validator.isLength(password, { min: 8 }))
-            fieldsErrors.password2 = "Le nouveau mot de passe doit contenir au moins 8 caractères\n"
+        return Result.error("Le nouveau mot de passe doit contenir au moins 8 caractères\n");
         else if (password != password2)
-            fieldsErrors.password2 = "Les 2 mots de passe doivent être identiques\n"
-
-        if (Object.keys(fieldsErrors).length)
-            return Result.error(fieldsErrors)
+        return Result.error("Les 2 mots de passe doivent être identiques\n");
 
         const user = await this.getByJWT(token)
         console.log(user.id + " and " + user.name)
@@ -174,7 +159,7 @@ export default class UserService {
 
         const match = await pwdUtil.checkMatch(currentpassword, user.passwordHash)
         if (!match)
-            return Result.error({ password2: "Mot de passe incorrect" })
+            return Result.error("Mot de passe incorrect")
 
             await this.userManager.updatePassword(user.email, pwdUtil.hash(password))
         return Result.success()
