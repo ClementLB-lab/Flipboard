@@ -1,11 +1,13 @@
 import React, { useState, Component } from 'react';
-import { makeStyles, Avatar, Grid, Divider } from "@material-ui/core";
+import { makeStyles, Avatar, Grid, Divider, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 
-export default function Comment({icon, username, text, date, key, length}) {
+export default function Comment({icon, username, text, date, key, id, userId, logId, magazineId, http}) {
+
+    const [errors, setErrors] = useState([]);
 
     const getTimeAgo = (date) => {
         const current = (Math.round(new Date().getTime() / 1000)) - 7200;
-        console.log("Timestamp actuel : " + current)
         var msPerMinute = 60;
         var msPerHour = msPerMinute * 60;
         var msPerDay = msPerHour * 24;
@@ -33,6 +35,32 @@ export default function Comment({icon, username, text, date, key, length}) {
             return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
         }
     };
+
+    const deleteComment = () => {
+        const output = http.post("/magazine/deleteReview", {
+            magazineId: magazineId,
+            reviewId: id,
+            token: http.token
+        });
+        console.log(output)
+        if (output.err) {
+            setErrors(errors.concat(output.err));
+            return (false);
+        }
+        if (output.success) {
+            alert("Votre commentaire a été correctement supprimé")
+        }
+        return (output.success);
+    };
+
+    const setButton = () => {
+        if (userId === logId) {
+            return (
+            <IconButton aria-label="delete" onClick={() => { deleteComment() }}>
+                <DeleteIcon />
+            </IconButton>);
+        }
+    };
  
     return(
         <div>
@@ -49,6 +77,7 @@ export default function Comment({icon, username, text, date, key, length}) {
                                 {getTimeAgo(date)}
                             </p>
                         </div>
+                        {setButton()}
                     </div>
                 </Grid>
             </Grid>

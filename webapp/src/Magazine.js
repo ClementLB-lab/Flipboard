@@ -20,9 +20,10 @@ export default function Magazine({ http })
     const [id, setId] = useState("");
     const [description, setDescription] = useState("");
     const [review, setReview] = useState("");
-
+    const [userId, setUserId] = useState("");
 
     const [reviewIds, setReviewIds] = useState([]);
+    const [reviewUsernameIds, setReviewUsernameIds] = useState([]);
     const [reviewUsernames, setReviewUsernames] = useState([]);
     const [reviewComments, setReviewComments] = useState([]);
     const [reviewDates, setReviewDates] = useState([]);
@@ -42,6 +43,9 @@ export default function Magazine({ http })
             window.location.href = "http://localhost:3000/";
             return;
         }
+        output = await http.get(`/user/getByJWT?token=${http.token}`);
+        setUserId(output.id);
+
         output = await http.get(`/magazine/getMagazineById?id=${magazineId}`);
         if (output == undefined) {
             window.location.href = "http://localhost:3000/";
@@ -70,8 +74,8 @@ export default function Magazine({ http })
         let output = await http.get(`/magazine/getReviewsByMagazineId?id=${magId}`);
         
         if (output.name != undefined) {
-            console.log(output.date)
-            setReviewIds(output.userId)
+            setReviewIds(output.id)
+            setReviewUsernameIds(output.userId)
             setReviewUsernames(output.name)
             setReviewComments(output.review)
             setReviewDates(output.date)
@@ -108,7 +112,11 @@ export default function Magazine({ http })
                                 text={reviewComments[index]}
                                 date={reviewDates[index]}
                                 key={index}
-                                length={reviewComments.length}
+                                id={reviewIds[index]}
+                                userId={reviewUsernameIds[index]}
+                                logId={userId}
+                                magazineId={id}
+                                http={http}
                             />
                         ))}
                     </Paper>
