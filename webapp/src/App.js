@@ -72,7 +72,7 @@ export default function App()
                                 <Magazine http={http} />
                             </Route>
                              <Route path="/">
-                                <Home articles={articles} />
+                                <Home articles={articles} http={http} />
                             </Route>
                         </Switch>
                     </div>

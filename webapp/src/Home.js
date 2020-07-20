@@ -6,7 +6,7 @@ import AnimatedCardContainer from "./AnimatedCardContainer";
 import ArticleList from "./ArticleList";
 import Wallpaper from "./images/wallpaper.jpg";
 
-export default function Home({ articles })
+export default function Home({ articles }, { http })
 {
     const styles = useStyles();
     const history = useHistory();
@@ -34,7 +34,7 @@ export default function Home({ articles })
                     <Button className={styles.button} variant="contained" color="secondary" onClick={onClickOnRegister}>Register</Button>
                 </div>
                 <div>
-                    <ArticleList articles={articles} />
+                    <ArticleList articles={articles} http={http} />
                 </div>
             </AnimatedCardContainer>
         </div>
