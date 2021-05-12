@@ -13,7 +13,7 @@
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mime": "^2.4.6",
-    "nodemailer": "^6.4.10",
+    "nodemailer": "^6.4.16",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.22.3",
