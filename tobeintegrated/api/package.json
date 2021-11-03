@@ -21,7 +21,7 @@
     "ts-node": "^8.10.2",
     "tsc": "^1.20150623.0",
     "typescript": "^3.9.6",
-    "validator": "^13.1.1"
+    "validator": "^13.7.0"
   },
   "devDependencies": {},
   "scripts": {
